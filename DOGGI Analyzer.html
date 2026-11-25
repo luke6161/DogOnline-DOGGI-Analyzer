@@ -1,0 +1,2278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DOGGI Drop Rate Analyzer</title>
+  <style>
+    :root {
+      --bg: #0f172a;
+      --surface: #1e293b;
+      --surface-hover: #273549;
+      --border: #334155;
+      --text: #f1f5f9;
+      --muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-dim: rgba(56, 189, 248, 0.15);
+      --success: #34d399;
+      --danger: #f87171;
+      --warning: #fbbf24;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      padding: 2rem 1rem;
+    }
+
+    .container {
+      max-width: 1040px;
+      margin: 0 auto;
+    }
+
+    header {
+      margin-bottom: 1.5rem;
+    }
+
+    h1 {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+
+    /* Drop Zone */
+    .drop-zone {
+      border: 2px dashed var(--border);
+      background: var(--surface);
+      border-radius: 12px;
+      padding: 2.25rem 1.5rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background-color 0.2s;
+      margin-bottom: 1.25rem;
+      user-select: none;
+    }
+
+    .drop-zone:hover,
+    .drop-zone.dragover {
+      border-color: var(--accent);
+      background: var(--surface-hover);
+    }
+
+    .drop-zone p {
+      font-size: 1.05rem;
+      margin-bottom: 0.35rem;
+      pointer-events: none;
+    }
+
+    .drop-zone span {
+      color: var(--muted);
+      font-size: 0.85rem;
+      pointer-events: none;
+    }
+
+    #fileInput {
+      display: none;
+    }
+
+    /* Files pane */
+    .files-pane {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 1.5rem;
+    }
+
+    .collapsible-header {
+      width: 100%;
+      background: var(--surface);
+      color: var(--text);
+      border: none;
+      padding: 0.9rem 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      cursor: pointer;
+      font-size: 0.98rem;
+      font-weight: 700;
+      text-align: left;
+      transition: background-color 0.15s;
+    }
+
+    .collapsible-header:hover {
+      background: var(--surface-hover);
+    }
+
+    .collapsible-title-wrap {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+    }
+
+    .collapsible-chevron {
+      display: inline-block;
+      color: var(--accent);
+      font-size: 0.88rem;
+      transition: transform 0.2s ease;
+    }
+
+    .collapsible-pane.collapsed .collapsible-chevron {
+      transform: rotate(-90deg);
+    }
+
+    .collapsible-meta {
+      font-size: 0.83rem;
+      font-weight: 500;
+      color: var(--muted);
+    }
+
+    .files-pane-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      padding: 0.85rem 1.1rem;
+    }
+
+    .files-pane-body {
+      padding: 1rem 1.1rem 1.15rem;
+      border-top: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .collapsible-pane.collapsed .collapsible-body {
+      display: none;
+    }
+
+    /* File Date Filter Bar inside Files Pane */
+    .file-date-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.7rem 0.85rem;
+    }
+
+    .date-filter-label {
+      font-size: 0.84rem;
+      color: var(--muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .view-tabs {
+      display: flex;
+      gap: 0.2rem;
+      border-bottom: 1px solid var(--border);
+      margin: 0.85rem 0 1rem;
+      overflow: hidden;
+      min-width: 0;
+    }
+    .view-tab {
+      appearance: none;
+      border: 1px solid transparent;
+      border-bottom: 0;
+      background: transparent;
+      color: var(--muted);
+      padding: 0.48rem 0.72rem;
+      border-radius: 8px 8px 0 0;
+      font: inherit;
+      font-size: 0.82rem;
+      font-weight: 650;
+      white-space: nowrap;
+      flex: 1 1 0;
+      min-width: 0;
+      cursor: pointer;
+    }
+    .view-tab:hover { color: var(--text); background: var(--surface); }
+    .view-tab.active {
+      color: var(--text);
+      background: var(--surface);
+      border-color: var(--border);
+      box-shadow: 0 1px 0 var(--surface);
+      margin-bottom: -1px;
+    }
+    .view-panel[hidden] { display: none !important; }
+    .view-panel { min-width: 0; }
+    .view-panel.item-config-panel { margin-bottom: 0; }
+    .item-config-panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem 1.1rem;
+      margin-bottom: 1.25rem;
+    }
+    .item-config-panel[hidden] { display: none; }
+    .item-config-heading {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      margin-bottom: 0.9rem;
+    }
+    .item-config-heading h2 { font-size: 1.05rem; margin-bottom: 0.15rem; }
+    .item-config-heading .subtitle { font-size: 0.82rem; }
+    .item-config-form {
+      display: flex;
+      align-items: end;
+      flex-wrap: wrap;
+      gap: 0.7rem;
+      margin-bottom: 0.9rem;
+    }
+    .item-config-form label {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+      color: var(--muted);
+      font-size: 0.8rem;
+    }
+    .item-config-form input {
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 0.55rem 0.65rem;
+      font: inherit;
+      min-width: 180px;
+    }
+    .item-config-form input[type="date"] { min-width: 145px; }
+    .item-config-form button { min-height: 37px; }
+    /* Loaded Files Grid */
+    .file-grid { overflow-x: auto; }
+    .file-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    .file-table th, .file-table td { padding: 0.65rem 0.75rem; border-bottom: 1px solid var(--border); text-align: left; }
+    .file-table th { color: var(--muted); font-weight: 600; }
+    .file-table th.sortable-th { cursor: pointer; user-select: none; }
+    .file-table th.sortable-th:hover { color: var(--text); }
+    .file-table tr.disabled-file { opacity: 0.55; }
+    .file-table .file-actions { white-space: nowrap; }
+    .file-table button { margin-right: 0.35rem; }
+
+    .file-card {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 0.65rem;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 0.7rem 0.8rem;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      transition: border-color 0.15s, opacity 0.15s;
+    }
+
+    .file-card.disabled-file {
+      opacity: 0.52;
+      border-style: dashed;
+    }
+
+    .file-card-main {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+      min-width: 0;
+      flex: 1;
+    }
+
+    .file-toggle {
+      margin-top: 0.2rem;
+      width: 16px;
+      height: 16px;
+      accent-color: var(--accent);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .file-info {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.3;
+      min-width: 0;
+    }
+
+    .file-name {
+      font-weight: 600;
+      overflow-wrap: anywhere;
+    }
+
+    .file-date {
+      font-size: 0.76rem;
+      color: var(--muted);
+      margin-top: 0.15rem;
+    }
+
+    .file-status {
+      font-size: 0.72rem;
+      color: var(--warning);
+      font-weight: 600;
+      margin-top: 0.15rem;
+    }
+
+    .file-delete-btn {
+      background: none;
+      border: none;
+      color: var(--muted);
+      cursor: pointer;
+      font-size: 1.15rem;
+      line-height: 1;
+      padding: 0.1rem 0.25rem;
+      border-radius: 4px;
+      flex-shrink: 0;
+    }
+
+    .file-delete-btn:hover {
+      color: var(--danger);
+      background: rgba(248, 113, 113, 0.12);
+    }
+
+    /* Controls Bar */
+    .controls {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.9rem 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .controls-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.65rem;
+      align-items: center;
+    }
+
+    input[type="text"],
+    input[type="datetime-local"],
+    textarea,
+    select {
+      background: var(--bg);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.45rem 0.7rem;
+      font-size: 0.88rem;
+    }
+
+    input[type="text"]:focus,
+    input[type="datetime-local"]:focus,
+    textarea:focus,
+    select:focus {
+      outline: none;
+      border-color: var(--accent);
+    }
+
+    button.btn {
+      background: var(--surface-hover);
+      color: var(--text);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.45rem 0.85rem;
+      font-size: 0.88rem;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s;
+    }
+
+    button.btn:hover {
+      border-color: var(--accent);
+    }
+
+    button.btn-primary {
+      background: var(--accent);
+      color: #0f172a;
+      border-color: var(--accent);
+      font-weight: 600;
+    }
+
+    button.btn-primary:hover {
+      opacity: 0.9;
+    }
+
+    button.btn-danger:hover {
+      border-color: var(--danger);
+      color: var(--danger);
+    }
+
+    .calc-mode-label {
+      color: var(--muted);
+      font-size: 0.84rem;
+      white-space: nowrap;
+      padding: 0.45rem 0.2rem;
+    }
+
+    .type-toggle {
+      background: var(--bg);
+      color: var(--muted);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.38rem 0.62rem;
+      font-size: 0.78rem;
+      line-height: 1.2;
+      cursor: pointer;
+    }
+
+    .type-toggle[aria-pressed="true"] {
+      color: var(--text);
+      border-color: var(--accent);
+      background: var(--accent-dim);
+    }
+
+    .type-toggle:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* Stats Summary */
+    .summary {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.9rem 1rem;
+    }
+
+    .stat-label {
+      color: var(--muted);
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .stat-value {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-top: 0.15rem;
+    }
+
+    .section-heading {
+      font-size: 1.1rem;
+      font-weight: 700;
+      margin-bottom: 0.85rem;
+      color: var(--text);
+    }
+
+    /* Source Cards */
+    .source-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
+      gap: 1rem;
+    }
+
+    .source-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1rem 1.1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+
+    .source-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 0.6rem;
+    }
+
+    .source-title-group {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      min-width: 0;
+    }
+
+    .source-thumb {
+      width: 56px;
+      height: 56px;
+      object-fit: contain;
+      border: none;
+      border-radius: 0;
+      padding: 0;
+      background: transparent;
+      flex-shrink: 0;
+    }
+
+    .source-thumb-placeholder {
+      width: 56px;
+      height: 56px;
+      border-radius: 0;
+      background: transparent;
+      border: none;
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .source-title {
+      font-weight: 700;
+      font-size: 1.05rem;
+      color: var(--accent);
+      overflow-wrap: anywhere;
+    }
+
+    .source-count {
+      font-size: 0.85rem;
+      color: var(--muted);
+      white-space: nowrap;
+    }
+    .source-type { color: var(--muted); font-size: 0.68rem; text-transform: uppercase; letter-spacing: .05em; }
+
+    .confidence-target-control {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      color: var(--muted);
+      font-size: 0.82rem;
+      white-space: nowrap;
+    }
+
+    .confidence-target-control select {
+      min-width: 125px;
+    }
+
+    .item-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.55rem;
+    }
+
+    .item-row {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+      position: relative;
+    }
+
+    .item-row[data-tooltip]::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      left: 0;
+      bottom: calc(100% + 0.45rem);
+      z-index: 50;
+      display: none;
+      width: max-content;
+      max-width: min(540px, 90vw);
+      white-space: pre-line;
+      padding: 0.65rem 0.8rem;
+      border-radius: 7px;
+      background: #20242b;
+      color: #fff;
+      font-size: 0.78rem;
+      line-height: 1.45;
+      font-weight: 400;
+      box-shadow: 0 4px 14px rgba(0,0,0,.22);
+      pointer-events: none;
+    }
+
+    .item-row[data-tooltip]:hover::after,
+    .item-row[data-tooltip]:focus-within::after {
+      display: block;
+    }
+
+    .item-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.9rem;
+    }
+
+    .item-pct {
+      font-weight: 650;
+    }
+    .item-pct { color: #fff; }
+    .item-pct.confidence-neutral {
+      color: #cbd5e1;
+      font-size: 0.88em;
+      font-weight: 500;
+    }
+    .item-pct.rarity-very-common { color: #60a5fa; }
+    .item-pct.rarity-common { color: #4ade80; }
+    .item-pct.rarity-uncommon { color: #facc15; }
+    .item-pct.rarity-rare { color: #fb923c; }
+    .item-pct.rarity-very-rare { color: #c084fc; }
+    .item-pct.rarity-ultra-rare {
+      background: linear-gradient(90deg, #ff5b5b, #ffb84d, #f5e65b, #62df85, #60b9ff, #b78aff, #ff79c6);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    .confidence-warning { font-size: 0.68em; margin-right: 0.25rem; vertical-align: 0.08em; }
+    .rarity-control { display: inline-flex; align-items: center; gap: .4rem; color: var(--muted); font-size: .82rem; white-space: nowrap; }
+    .rarity-key { display: flex; flex-wrap: wrap; gap: .35rem .75rem; align-items: center; width: 100%; font-size: .75rem; color: var(--muted); }
+    .rarity-key[hidden] { display: none; }
+    .rarity-key-item { display: inline-flex; align-items: center; gap: .3rem; white-space: nowrap; }
+    .rarity-swatch { width: .62rem; height: .62rem; border-radius: 50%; display: inline-block; }
+    .rarity-swatch.very-common { background: #60a5fa; }
+    .rarity-swatch.common { background: #4ade80; }
+    .rarity-swatch.uncommon { background: #facc15; }
+    .rarity-swatch.rare { background: #fb923c; }
+    .rarity-swatch.very-rare { background: #c084fc; }
+    .rarity-swatch.ultra-rare { background: linear-gradient(90deg, #ff5b5b, #ffb84d, #f5e65b, #62df85, #60b9ff, #b78aff); }
+
+    .item-ratio {
+      color: var(--muted);
+      font-size: 0.8rem;
+      margin-left: 0.35rem;
+    }
+
+    .bar-bg {
+      height: 6px;
+      background: var(--bg);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 999px;
+      transition: width 0.25s ease;
+    }
+
+    .empty-items {
+      color: var(--muted);
+      font-style: italic;
+      font-size: 0.88rem;
+    }
+
+    .error-banner {
+      background: rgba(248, 113, 113, 0.15);
+      border: 1px solid var(--danger);
+      color: #fecaca;
+      padding: 0.75rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      display: none;
+    }
+
+    /* Modal Dialog */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(2, 6, 23, 0.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      z-index: 100;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      max-width: 560px;
+      width: 100%;
+      padding: 1.35rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+    }
+
+    .modal h2 {
+      font-size: 1.15rem;
+      margin-bottom: 0.5rem;
+      color: var(--warning);
+    }
+
+    .modal p {
+      font-size: 0.92rem;
+      color: var(--text);
+      margin-bottom: 0.85rem;
+    }
+
+    .modal textarea {
+      width: 100%;
+      min-height: 200px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+      font-size: 0.8rem;
+      margin-bottom: 1rem;
+    }
+
+    .modal-compare {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 0.75rem;
+      font-size: 0.83rem;
+      color: var(--muted);
+      margin-bottom: 1.1rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+    }
+
+    .modal-compare strong {
+      color: var(--text);
+    }
+
+    .modal-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 0.6rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>DOGGI Analyzer</h1>
+      <p class="subtitle">Upload one or more exported .JSON files to view data, calculate drop rates, and merge files.</p>
+    </header>
+
+    <div id="errorBanner" class="error-banner"></div>
+
+    <nav class="view-tabs" role="tablist" aria-label="Analyzer views">
+      <button class="view-tab active" id="tabLoadedFiles" type="button" role="tab" aria-selected="true" aria-controls="viewLoadedFiles" data-view="viewLoadedFiles">Files</button>
+      <button class="view-tab" id="tabItemDrops" type="button" role="tab" aria-selected="false" aria-controls="viewItemDrops" data-view="viewItemDrops">Item Drops</button>
+      <button class="view-tab" id="tabItemConfigs" type="button" role="tab" aria-selected="false" aria-controls="viewItemConfigs" data-view="viewItemConfigs">Item Configs</button>
+    </nav>
+
+<section id="viewItemDrops" class="view-panel" role="tabpanel" aria-labelledby="tabItemDrops" hidden>
+    <div id="controls" class="controls" style="display: none;">
+      <div class="controls-group">
+        <input type="text" id="searchInput" placeholder="Filter source or item..." />
+        <select id="sortBy">
+          <option value="alpha">Sort: Name A–Z</option>
+          <option value="countDesc">Sort: Highest Count</option>
+        </select>
+        <label class="confidence-target-control" for="confidenceTarget">Confidence target
+          <select id="confidenceTarget">
+            <option value="none">None</option>
+            <option value="95">95% Interval</option>
+            <option value="70">70% Interval</option>
+            <option value="50">50% Interval</option>
+          </select>
+        </label>
+        <button class="type-toggle" type="button" data-source-type="enemy" aria-pressed="true">Enemy</button>
+        <button class="type-toggle" type="button" data-source-type="boss" aria-pressed="true">Boss</button>
+        <button class="type-toggle" type="button" data-source-type="chest" aria-pressed="true">Chest</button>
+        <label class="rarity-control"><input type="checkbox" id="highlightRarity" /> Highlight rarity</label>
+      </div>
+      <div id="rarityKey" class="rarity-key" hidden aria-label="Drop rarity key">
+        <span class="rarity-key-item"><i class="rarity-swatch very-common"></i>Very Common (100%–70%)</span>
+        <span class="rarity-key-item"><i class="rarity-swatch common"></i>Common (70%–3%)</span>
+        <span class="rarity-key-item"><i class="rarity-swatch uncommon"></i>Uncommon (3%–0.8%)</span>
+        <span class="rarity-key-item"><i class="rarity-swatch rare"></i>Rare (0.8%–0.08%)</span>
+        <span class="rarity-key-item"><i class="rarity-swatch very-rare"></i>Very Rare (0.08%–0.01%)</span>
+        <span class="rarity-key-item"><i class="rarity-swatch ultra-rare"></i>Ultra Rare (&lt;0.01%)</span>
+      </div>
+    </div>
+
+    <div id="summary" class="summary" style="display: none;">
+      <div class="stat-card">
+        <div class="stat-label">Enabled Files</div>
+        <div id="statFiles" class="stat-value">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Unique Sources</div>
+        <div id="statSources" class="stat-value">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Encounters</div>
+        <div id="statEncounters" class="stat-value">0</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-label">Total Items Dropped</div>
+        <div id="statItems" class="stat-value">0</div>
+      </div>
+    </div>
+
+    <h2 id="sourcesHeading" class="section-heading" style="display: none;">Sources</h2>
+    <div id="results" class="source-grid"></div>
+    </section>
+
+    <section id="viewItemConfigs" class="view-panel item-config-panel" role="tabpanel" aria-labelledby="tabItemConfigs" hidden>
+      <div class="item-config-heading">
+        <div>
+          <h2>Item Config</h2>
+          <p class="subtitle">Set the date each item began dropping. Earlier logs will be excluded from that item's drop chance.</p>
+        </div>
+        <div class="controls-group">
+          <button id="exportItemConfigsBtn" class="btn btn-primary" type="button">Export CSV</button>
+          <button id="importItemConfigsBtn" class="btn" type="button">Load CSV</button>
+          <input id="itemConfigFileInput" type="file" accept=".csv,text/csv" hidden />
+        </div>
+      </div>
+      <form id="itemConfigForm" class="item-config-form">
+        <label>Item Name<input id="itemConfigName" type="text" placeholder="e.g. Socks" required /></label>
+        <label>Date<input id="itemConfigDate" type="date" required /></label>
+        <button class="btn btn-primary" type="submit">Save Item Config</button>
+      </form>
+      <div id="itemConfigGrid" class="file-grid"></div>
+    </section>
+
+
+<section id="viewLoadedFiles" class="view-panel active" role="tabpanel" aria-labelledby="tabLoadedFiles">
+    <div id="dropZone" class="drop-zone" role="button" tabindex="0">
+      <p><strong>Click/drag here to load files</strong></p>
+      <span>Supports selecting multiple JSON files at once (e.g., DOGGI-*.json)</span>
+    </div>
+    <input type="file" id="fileInput" accept=".json,application/json" multiple />
+    <section id="filesPane" class="files-pane" style="display: none;">
+      <div class="files-pane-heading">
+        <strong>Loaded Files</strong>
+        <span id="filesPaneMeta" class="collapsible-meta">0 files</span>
+      </div>
+      <div id="filesPaneBody" class="files-pane-body">
+        <div class="file-date-bar">
+          <div class="controls-group">
+            <label class="date-filter-label">
+              Recorded From:
+              <input type="datetime-local" id="dateFrom" />
+            </label>
+            <label class="date-filter-label">
+              Recorded To:
+              <input type="datetime-local" id="dateTo" />
+            </label>
+          </div>
+          <div class="controls-group">
+            <button id="enableAllFilesBtn" class="btn" type="button">Show All</button>
+            <button id="hideAllFilesBtn" class="btn" type="button">Hide All</button>
+            <button id="removeAllFilesBtn" class="btn btn-danger" type="button">Remove All</button>
+            <button id="resetDatesBtn" class="btn" type="button">Reset Dates</button>
+            <button id="exportBtn" class="btn btn-primary" type="button">Export Master JSON</button>
+          </div>
+        </div>
+        <div id="fileGrid" class="file-grid"></div>
+      </div>
+    </section>
+    </section>
+
+
+  </div>
+
+  <!-- Duplicate Source Name Prompt Modal -->
+  <div id="duplicateModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modal">
+      <h2 id="modalTitle">Matching Source Name Found</h2>
+      <p id="modalDescription"></p>
+      <div id="modalCompare" class="modal-compare"></div>
+      <div class="modal-actions">
+        <button id="modalSkipBtn" class="btn" type="button">Keep</button>
+        <button id="modalSuppressBtn" class="btn" type="button">Keep All</button>
+        <button id="modalReplaceBtn" class="btn btn-primary" type="button">Replace Existing</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Source metadata and wiki images supplied in the source table.
+    const SOURCE_METADATA = {
+  "peeperpiper": {
+    "name": "Peeper Piper",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/9/91/Enemy_Peeper_Piper.png/128px-Enemy_Peeper_Piper.png"
+  },
+  "peam": {
+    "name": "Peam",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/b/b6/Enemy_Peam.png/128px-Enemy_Peam.png"
+  },
+  "pupcup": {
+    "name": "Pup Cup",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/8/8c/Enemy_Pup_Cup.png/128px-Enemy_Pup_Cup.png"
+  },
+  "leatsch": {
+    "name": "Leatsch",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/1/11/Enemy_Leatsch.png/128px-Enemy_Leatsch.png"
+  },
+  "pieder": {
+    "name": "Pieder",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/9/93/Enemy_Pieder.png/128px-Enemy_Pieder.png"
+  },
+  "threeper": {
+    "name": "Threeper",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/a/a0/Enemy_Threeper.png/128px-Enemy_Threeper.png"
+  },
+  "dogburger": {
+    "name": "Dogburger",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/0/05/Enemy_Dogburger.png/128px-Enemy_Dogburger.png"
+  },
+  "telephony": {
+    "name": "Telephony",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/d/dd/Enemy_Telephony.png/128px-Enemy_Telephony.png"
+  },
+  "ruffroast": {
+    "name": "Ruff Roast",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/3/34/Enemy_Ruff_Roast.png/128px-Enemy_Ruff_Roast.png"
+  },
+  "weeper": {
+    "name": "Weeper",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/6/6b/Enemy_Weeper.png/128px-Enemy_Weeper.png"
+  },
+  "skydog": {
+    "name": "Skydog",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/3/38/Enemy_Sky_Dog.png/128px-Enemy_Sky_Dog.png"
+  },
+  "peeper": {
+    "name": "Peeper",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/1/12/Enemy_Peeper.png/128px-Enemy_Peeper.png"
+  },
+  "alchemist": {
+    "name": "The Alchemist",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/5/5c/Enemy_The_Alchemist.png/128px-Enemy_The_Alchemist.png"
+  },
+  "potbull": {
+    "name": "Potbull",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/3/37/Enemy_Poison_Potbull.png/124px-Enemy_Poison_Potbull.png"
+  },
+  "grimy grim": {
+    "name": "Grimy Grim",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/4/48/Enemy_Grimy_Grim.png/128px-Enemy_Grimy_Grim.png"
+  },
+  "npc thecone small": {
+    "name": "Caution Collie",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/b/b3/Enemy_Caution_Collie.png/128px-Enemy_Caution_Collie.png"
+  },
+  "dingbat": {
+    "name": "Dingbat",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/0/0c/Enemy_Dingbat.png/128px-Enemy_Dingbat.png"
+  },
+  "magicclover": {
+    "name": "Clover",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/d/da/Enemy_Clover.png/128px-Enemy_Clover.png"
+  },
+  "slog2": {
+    "name": "Sluppy",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/b/b2/Enemy_Sluppy.png/128px-Enemy_Sluppy.png"
+  },
+  "cookie nightjar": {
+    "name": "Cookie Nightjar",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/3/33/Enemy_Cookie_Nightjar.png/128px-Enemy_Cookie_Nightjar.png"
+  },
+  "hammer": {
+    "name": "Mallet Mutt",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/a/aa/Enemy_Mallet_Mutt.png/128px-Enemy_Mallet_Mutt.png"
+  },
+  "reeper": {
+    "name": "Reeper",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/7/72/Enemy_Reeper.png/128px-Enemy_Reeper.png"
+  },
+  "hatchling tennisball": {
+    "name": "Hatchling Tennis Ball",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/e/e1/Enemy_Hatchling_Tennis_Ball.png/128px-Enemy_Hatchling_Tennis_Ball.png"
+  },
+  "bootdog": {
+    "name": "Boot Dog",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/6/68/Enemy_Boot_Dog.png/128px-Enemy_Boot_Dog.png"
+  },
+  "magicharp": {
+    "name": "Harp of Dogda",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/3/32/Enemy_Harp_of_Dogda.png/128px-Enemy_Harp_of_Dogda.png"
+  },
+  "cursed conjuror": {
+    "name": "Cursed Conjuror",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/0/0e/Enemy_Cursed_Conjuror.png/128px-Enemy_Cursed_Conjuror.png"
+  },
+  "creeper": {
+    "name": "Creeper",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/d/d7/Enemy_Creeper.png/128px-Enemy_Creeper.png"
+  },
+  "surfinpeepr": {
+    "name": "Surfer Peeper",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/1/15/Enemy_Surfer_Peeper.png/128px-Enemy_Surfer_Peeper.png"
+  },
+  "deadly dogma": {
+    "name": "Deadly Dogma",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/6/67/Enemy_Deadly_Dogma.png/128px-Enemy_Deadly_Dogma.png"
+  },
+  "clouddoggy": {
+    "name": "Clouddoggy",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/a/af/Enemy_Clouddoggy.png/128px-Enemy_Clouddoggy.png"
+  },
+  "magicrainbow": {
+    "name": "Rainbow",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/f/f6/Enemy_Rainbow.png/128px-Enemy_Rainbow.png"
+  },
+  "aheemheem": {
+    "name": "Aheemheem",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/2/2c/Enemy_Aheemheem.png/128px-Enemy_Aheemheem.png"
+  },
+  "sweeper": {
+    "name": "Sweeper",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/7/72/Enemy_Sweeper.png/128px-Enemy_Sweeper.png"
+  },
+  "slog": {
+    "name": "Slog",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/7/71/Enemy_Slog.png/128px-Enemy_Slog.png"
+  },
+  "ghost": {
+    "name": "Doggy Ghost",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/4/4f/Enemy_Doggy_Ghost.png/128px-Enemy_Doggy_Ghost.png"
+  },
+  "pumpkin": {
+    "name": "Haunted Pumpkin Dog",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/e/ea/Enemy_Haunted_Pumpkin_Dog.png/128px-Enemy_Haunted_Pumpkin_Dog.png"
+  },
+  "groweduppieder": {
+    "name": "Growed-Up Pieder",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/f/fc/Enemy_Growed-Up_Pieder.png/128px-Enemy_Growed-Up_Pieder.png"
+  },
+  "freezypup": {
+    "name": "Freezy Pup",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/4/4d/Enemy_Freezy_Pup.png/128px-Enemy_Freezy_Pup.png"
+  },
+  "hop pot": {
+    "name": "Hop Pot",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/6/64/Enemy_Hop_Pot.png/128px-Enemy_Hop_Pot.png"
+  },
+  "booby trap": {
+    "name": "Booby Trap",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/b/bb/Enemy_Booby_Trap.png/128px-Enemy_Booby_Trap.png"
+  },
+  "twoscoop freezeypup": {
+    "name": "Two-Scoop Freezy Pup",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/3/31/Enemy_Two-Scoop_Freezy_Pup.png/128px-Enemy_Two-Scoop_Freezy_Pup.png"
+  },
+  "leeper": {
+    "name": "Leeper",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/e/ea/Enemy_Leeper.png/128px-Enemy_Leeper.png"
+  },
+  "balloon": {
+    "name": "Balloon Dog",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/a/a8/Enemy_Balloon_Dog.png/128px-Enemy_Balloon_Dog.png"
+  },
+  "cubeslime": {
+    "name": "Dogslime",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/6/6a/Enemy_Dogslime.png/128px-Enemy_Dogslime.png"
+  },
+  "frostbiter": {
+    "name": "Frost Biter",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/5/56/Enemy_Frost_Biter.png"
+  },
+  "unigore": {
+    "name": "Unigore",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/0/01/Enemy_Unigore.png/128px-Enemy_Unigore.png"
+  },
+  "germ": {
+    "name": "Dog Germ",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/b/b3/Enemy_Dog_Germ.png/128px-Enemy_Dog_Germ.png"
+  },
+  "bigsnodawg": {
+    "name": "Big Sno Dawg",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/f/f2/Enemy_Big_sno_dawg.png/128px-Enemy_Big_sno_dawg.png"
+  },
+  "pappypeeper": {
+    "name": "Pappy Peeper",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/4/47/Enemy_Pappy_Peeper.png/128px-Enemy_Pappy_Peeper.png"
+  },
+  "barraskewer": {
+    "name": "Barraskewer",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/3/39/Enemy_Barraskewer.png/108px-Enemy_Barraskewer.png"
+  },
+  "bigmittsmolly": {
+    "name": "Big Mitts Molly",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/7/73/Enemy_Big_Mitts_Molly.png/128px-Enemy_Big_Mitts_Molly.png"
+  },
+  "the devourer": {
+    "name": "The Devourer",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/9/98/Enemy_The_Devourer.png/128px-Enemy_The_Devourer.png"
+  },
+  "da bawss": {
+    "name": "Da Bawss",
+    "type": "boss",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/b/be/Enemy_Crony_Bones_and_Da_Bawss.png/133px-Enemy_Crony_Bones_and_Da_Bawss.png"
+  },
+  "enormous treasure": {
+    "name": "Enormous Treasure",
+    "type": "chest",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/b/b6/Item_Treasure_chest_%28Cheese_Maze%29.png/250px-Item_Treasure_chest_%28Cheese_Maze%29.png"
+  },
+  "treasure": {
+    "name": "Treasure",
+    "type": "chest",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/b/b6/Item_Treasure_chest_%28Cheese_Maze%29.png/250px-Item_Treasure_chest_%28Cheese_Maze%29.png"
+  },
+  "slop": {
+    "name": "Slop",
+    "type": "chest",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/5/50/Item_Nasty_pile_of_slop.png/250px-Item_Nasty_pile_of_slop.png"
+  },
+  "bookshelf": {
+    "name": "Bookshelf",
+    "type": "chest",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/e/e2/Item_Dusty_old_bookshelf.png/250px-Item_Dusty_old_bookshelf.png"
+  },
+  "dogre": {
+    "name": "Dogre",
+    "type": "boss",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/f/fc/Enemy_Dogre.png/128px-Enemy_Dogre.png"
+  },
+  "dragon": {
+    "name": "Snooty Soot",
+    "type": "boss",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/0/07/Enemy_Snooty_Soot.png/128px-Enemy_Snooty_Soot.png"
+  },
+  "cronybones": {
+    "name": "Crony Bones",
+    "type": "boss",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/b/be/Enemy_Crony_Bones_and_Da_Bawss.png/128px-Enemy_Crony_Bones_and_Da_Bawss.png"
+  },
+  "rodin": {
+    "name": "Rodin",
+    "type": "boss",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/d/d4/Enemy_Rodin.png/128px-Enemy_Rodin.png"
+  },
+  "papa peeper": {
+    "name": "Papa Peeper",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/b/b7/Enemy_Papa_Peeper.png/128px-Enemy_Papa_Peeper.png"
+  },
+  "icewolf": {
+    "name": "Arcteeth",
+    "type": "boss",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/6/66/Enemy_Arcteeth.png/128px-Enemy_Arcteeth.png"
+  },
+  "arcteeth": {
+    "name": "Arcteeth",
+    "type": "boss",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/6/66/Enemy_Arcteeth.png/128px-Enemy_Arcteeth.png"
+  },
+  "freak1": {
+    "name": "Freak",
+    "type": "enemy",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/thumb/6/61/Enemy_Freak.png/128px-Enemy_Freak.png"
+  },
+  "cooler": {
+    "name": "Forgotten Cooler",
+    "type": "chest",
+    "imageUrl": "https://static.wikitide.net/dogonlinedotnetwikiwiki/4/42/Item_Cooler.png"
+  }
+};
+
+    function getSourceMetadata(sourceName) {
+      return SOURCE_METADATA[String(sourceName || "").trim().toLowerCase()] || {
+        name: sourceName,
+        type: "unknown",
+        imageUrl: ""
+      };
+    }
+
+    let loadedEntries = [];
+    let suppressDuplicatePrompts = false;
+    let fileSortColumn = "fileName";
+    let fileSortDirection = "asc";
+
+    const dropZone = document.getElementById("dropZone");
+    const fileInput = document.getElementById("fileInput");
+    const filesPane = document.getElementById("filesPane");
+    const filesPaneMeta = document.getElementById("filesPaneMeta");
+    const fileGrid = document.getElementById("fileGrid");
+    const controls = document.getElementById("controls");
+    const summary = document.getElementById("summary");
+    const sourcesHeading = document.getElementById("sourcesHeading");
+    const resultsEl = document.getElementById("results");
+    const errorBanner = document.getElementById("errorBanner");
+
+    const searchInput = document.getElementById("searchInput");
+    const sortBy = document.getElementById("sortBy");
+    const confidenceTarget = document.getElementById("confidenceTarget");
+    const savedConfidenceTarget = localStorage.getItem("doggiConfidenceTarget") || "none";
+    confidenceTarget.value = savedConfidenceTarget === "90" ? "95" : savedConfidenceTarget;
+    const highlightRarity = document.getElementById("highlightRarity");
+    const rarityKey = document.getElementById("rarityKey");
+    highlightRarity.checked = localStorage.getItem("doggiHighlightRarity") === "true";
+    rarityKey.hidden = !highlightRarity.checked;
+    highlightRarity.addEventListener("change", () => {
+      localStorage.setItem("doggiHighlightRarity", String(highlightRarity.checked));
+      rarityKey.hidden = !highlightRarity.checked;
+      render();
+    });
+    confidenceTarget.addEventListener("change", () => {
+      localStorage.setItem("doggiConfidenceTarget", confidenceTarget.value);
+      render();
+    });
+    const typeToggleButtons = Array.from(document.querySelectorAll(".type-toggle"));
+    const selectedTypes = new Set(["enemy", "boss", "chest"]);
+    const dateFrom = document.getElementById("dateFrom");
+    const dateTo = document.getElementById("dateTo");
+    const enableAllFilesBtn = document.getElementById("enableAllFilesBtn");
+    const hideAllFilesBtn = document.getElementById("hideAllFilesBtn");
+    const removeAllFilesBtn = document.getElementById("removeAllFilesBtn");
+    const resetDatesBtn = document.getElementById("resetDatesBtn");
+    const exportBtn = document.getElementById("exportBtn");
+    const itemConfigForm = document.getElementById("itemConfigForm");
+    const itemConfigName = document.getElementById("itemConfigName");
+    const itemConfigDate = document.getElementById("itemConfigDate");
+    const itemConfigGrid = document.getElementById("itemConfigGrid");
+    const exportItemConfigsBtn = document.getElementById("exportItemConfigsBtn");
+    const importItemConfigsBtn = document.getElementById("importItemConfigsBtn");
+    const itemConfigFileInput = document.getElementById("itemConfigFileInput");
+    const ITEM_CONFIG_STORAGE_KEY = "doggi-item-configs-v1";
+    let itemConfigs = loadItemConfigs();
+
+    const duplicateModal = document.getElementById("duplicateModal");
+    const modalDescription = document.getElementById("modalDescription");
+    const modalCompare = document.getElementById("modalCompare");
+    const modalSkipBtn = document.getElementById("modalSkipBtn");
+    const modalReplaceBtn = document.getElementById("modalReplaceBtn");
+    const modalSuppressBtn = document.getElementById("modalSuppressBtn");
+
+    function showError(msg) {
+      errorBanner.textContent = msg;
+      errorBanner.style.display = msg ? "block" : "none";
+    }
+
+    function formatChancePct(value) {
+      if (typeof value !== "number" || Number.isNaN(value)) return "0.00%";
+      const decimals = Math.abs(value) > 0 && Math.abs(value) < 0.01 ? 3 : 2;
+      return `${value.toFixed(decimals)}%`;
+    }
+
+    function formatOneInX(qty, denominator) {
+      if (qty <= 0 || denominator <= 0) return "—";
+      if (qty > denominator) {
+        const avgPerRoll = (qty / denominator).toFixed(1).replace(/\.0$/, "");
+        return `~${avgPerRoll}/1`;
+      }
+      const x = Math.max(1, Math.round(denominator / qty));
+      return `1/${x.toLocaleString()}`;
+    }
+
+    function parseRecordedAt(raw) {
+      if (!raw) return { display: "No Recorded At date", ms: null };
+      const ms = Date.parse(raw);
+      if (Number.isNaN(ms)) {
+        return { display: String(raw), ms: null };
+      }
+      return {
+        display: new Date(ms).toLocaleString(undefined, {
+          dateStyle: "medium",
+          timeStyle: "short",
+        }),
+        ms,
+      };
+    }
+
+    function getSourceNameKey(data, fileName) {
+      const name = typeof data.name === "string" ? data.name.trim() : "";
+      return name || fileName;
+    }
+
+    function matchesDateFilter(entry) {
+      const fromMs = dateFrom.value ? Date.parse(dateFrom.value) : null;
+      const toMs = dateTo.value ? Date.parse(dateTo.value) : null;
+
+      if (fromMs === null && toMs === null) return true;
+      if (entry.recordedAtMs === null) return false;
+
+      if (fromMs !== null && !Number.isNaN(fromMs) && entry.recordedAtMs < fromMs) {
+        return false;
+      }
+      if (toMs !== null && !Number.isNaN(toMs) && entry.recordedAtMs > toMs) {
+        return false;
+      }
+      return true;
+    }
+
+    function applyDateFilterToCheckboxes() {
+      const hasDateFilter = Boolean(dateFrom.value || dateTo.value);
+      if (!hasDateFilter) return;
+      for (const entry of loadedEntries) {
+        entry.enabled = matchesDateFilter(entry);
+      }
+    }
+
+    function promptReplaceDuplicate(existingEntry, incomingEntry) {
+      if (suppressDuplicatePrompts) return Promise.resolve("skip");
+      return new Promise((resolve) => {
+        const existingDate = parseRecordedAt(existingEntry.recordedAtRaw).display;
+        const incomingDate = parseRecordedAt(incomingEntry.recordedAtRaw).display;
+
+        modalDescription.textContent = `A file named "${incomingEntry.fileName}" is already loaded. Would you like to replace it with the new file?`;
+        modalCompare.innerHTML = `
+          <div><strong>Existing:</strong> ${escapeHtml(existingEntry.fileName)} — Recorded: ${escapeHtml(existingDate)}</div>
+          <div><strong>Incoming:</strong> ${escapeHtml(incomingEntry.fileName)} — Recorded: ${escapeHtml(incomingDate)}</div>
+        `;
+
+        duplicateModal.classList.add("open");
+
+        function cleanup(choice) {
+          duplicateModal.classList.remove("open");
+          modalSkipBtn.removeEventListener("click", onSkip);
+          modalReplaceBtn.removeEventListener("click", onReplace);
+          modalSuppressBtn.removeEventListener("click", onSuppress);
+          resolve(choice);
+        }
+
+        function onSkip() { cleanup("skip"); }
+        function onReplace() { cleanup("replace"); }
+        function onSuppress() {
+          suppressDuplicatePrompts = true;
+          cleanup("skip");
+        }
+
+        modalSkipBtn.addEventListener("click", onSkip);
+        modalReplaceBtn.addEventListener("click", onReplace);
+        modalSuppressBtn.addEventListener("click", onSuppress);
+      });
+    }
+
+    // Prevent browser default navigation when dropping files anywhere on the page
+    window.addEventListener("dragover", (e) => {
+      e.preventDefault();
+    });
+    window.addEventListener("drop", (e) => {
+      e.preventDefault();
+    });
+
+    // Drag & Drop and Click handlers
+    dropZone.addEventListener("click", () => {
+      fileInput.click();
+    });
+
+    dropZone.addEventListener("keydown", (e) => {
+      if (e.key === "Enter" || e.key === " ") {
+        e.preventDefault();
+        fileInput.click();
+      }
+    });
+
+    dropZone.addEventListener("dragenter", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dropZone.classList.add("dragover");
+    });
+
+    dropZone.addEventListener("dragover", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (e.dataTransfer) {
+        e.dataTransfer.dropEffect = "copy";
+      }
+      dropZone.classList.add("dragover");
+    });
+
+    dropZone.addEventListener("dragleave", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      if (!dropZone.contains(e.relatedTarget)) {
+        dropZone.classList.remove("dragover");
+      }
+    });
+
+    dropZone.addEventListener("drop", (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      dropZone.classList.remove("dragover");
+      const files = e.dataTransfer ? e.dataTransfer.files : null;
+      if (files && files.length > 0) {
+        handleFiles(files);
+      }
+    });
+
+    fileInput.addEventListener("change", (e) => {
+      if (e.target.files && e.target.files.length > 0) {
+        handleFiles(e.target.files);
+      }
+      fileInput.value = "";
+    });
+
+    async function handleFiles(fileList) {
+      showError("");
+
+      for (const file of Array.from(fileList)) {
+        try {
+          const text = await file.text();
+          const data = JSON.parse(text);
+          if (!data || typeof data.sources !== "object") {
+            throw new Error(`"${file.name}" does not contain a valid "sources" object.`);
+          }
+
+          const recordedAtRaw = data.recordedAt || null;
+          const parsedDate = parseRecordedAt(recordedAtRaw);
+          const sourceLabel = getSourceNameKey(data, file.name);
+
+          const incomingEntry = {
+            id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+            fileName: file.name,
+            sourceLabel,
+            recordedAtRaw,
+            recordedAtMs: parsedDate.ms,
+            enabled: true,
+            data,
+          };
+
+          if (dateFrom.value || dateTo.value) {
+            incomingEntry.enabled = matchesDateFilter(incomingEntry);
+          }
+
+		 const existingIdx = loadedEntries.findIndex(
+		   (e) => e.fileName.toLowerCase() === incomingEntry.fileName.toLowerCase()
+		 );
+
+          if (existingIdx !== -1) {
+            const decision = await promptReplaceDuplicate(loadedEntries[existingIdx], incomingEntry);
+            if (decision === "replace") {
+              loadedEntries[existingIdx] = incomingEntry;
+            }
+          } else {
+            loadedEntries.push(incomingEntry);
+          }
+        } catch (err) {
+          showError(`Error reading ${file.name}: ${err.message}`);
+        }
+      }
+
+      render();
+    }
+
+    function getActiveEntries() {
+      return loadedEntries.filter((entry) => entry.enabled);
+    }
+
+    function mergeActiveSources(activeEntries, options = {}) {
+      const excludeItemBeforeCutoff = options.excludeItemBeforeCutoff === true;
+      const master = {};
+
+      for (const entry of activeEntries) {
+        for (const [sourceName, details] of Object.entries(entry.data.sources || {})) {
+          if (!master[sourceName]) {
+            master[sourceName] = { count: 0, items: {} };
+          }
+          master[sourceName].count += Number(details.count || 0);
+
+          for (const item of details.items || []) {
+            if (item && item.name) {
+              if (excludeItemBeforeCutoff) {
+                const config = getItemConfig(item.name);
+                if (config) {
+                  const cutoffMs = Date.parse(`${config.date}T00:00:00`);
+                  if (entry.recordedAtMs === null || entry.recordedAtMs < cutoffMs) {
+                    continue;
+                  }
+                }
+              }
+              const qty = Number(item.quantity ?? 1);
+              master[sourceName].items[item.name] =
+                (master[sourceName].items[item.name] || 0) + qty;
+            }
+          }
+        }
+      }
+      return master;
+    }
+
+    function computeSourcesHash(sourcesObj) {
+      const canonical = JSON.stringify(sourcesObj);
+      let hash = 0x811c9dc5;
+      for (let i = 0; i < canonical.length; i++) {
+        hash ^= canonical.charCodeAt(i);
+        hash = Math.imul(hash, 0x01000193);
+      }
+      return (hash >>> 0).toString(16).padStart(8, "0");
+    }
+
+    function getOldestEntryIso(entries) {
+      let oldestMs = Infinity;
+      let oldestRaw = null;
+      for (const entry of entries) {
+        if (typeof entry.recordedAtMs === "number" && !Number.isNaN(entry.recordedAtMs)) {
+          if (entry.recordedAtMs < oldestMs) {
+            oldestMs = entry.recordedAtMs;
+            oldestRaw = entry.recordedAtRaw;
+          }
+        }
+      }
+      if (oldestMs === Infinity) return new Date().toISOString();
+      if (typeof oldestRaw === "string" && !Number.isNaN(Date.parse(oldestRaw))) {
+        return oldestRaw;
+      }
+      return new Date(oldestMs).toISOString();
+    }
+
+    function buildDoggiMasterPayload(entries, exportName, options = {}) {
+      const merged = mergeActiveSources(entries, options);
+      const sources = {};
+
+      for (const sourceName of Object.keys(merged).sort()) {
+        const { count, items } = merged[sourceName];
+        const formattedItems = Object.entries(items)
+          .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+          .map(([name, quantity]) => ({ name, quantity }));
+
+        sources[sourceName] = {
+          count,
+          items: formattedItems,
+        };
+      }
+
+      return {
+        sources,
+        recordedAt: getOldestEntryIso(entries),
+        name: exportName,
+        doggiExportVersion: 1,
+        sourcesHash: computeSourcesHash(sources),
+      };
+    }
+
+    function getExportBatches(activeEntries) {
+      const datedEntries = activeEntries.filter(
+        (e) => typeof e.recordedAtMs === "number" && !Number.isNaN(e.recordedAtMs)
+      );
+      if (!datedEntries.length) {
+        return [{ entries: activeEntries, suffix: "" }];
+      }
+
+      const minMs = Math.min(...datedEntries.map((e) => e.recordedAtMs));
+      const maxMs = Math.max(...datedEntries.map((e) => e.recordedAtMs));
+
+      const splitTimestamps = Array.from(
+        new Set(
+          itemConfigs
+            .map((c) => Date.parse(`${c.date}T00:00:00`))
+            .filter((ms) => !Number.isNaN(ms) && ms > minMs && ms <= maxMs)
+        )
+      ).sort((a, b) => a - b);
+
+      if (!splitTimestamps.length) {
+        return [{ entries: activeEntries, suffix: "" }];
+      }
+
+      const batches = [];
+      let prevMs = -Infinity;
+      for (const cutoffMs of splitTimestamps) {
+        const group = activeEntries.filter(
+          (e) => e.recordedAtMs !== null && e.recordedAtMs >= prevMs && e.recordedAtMs < cutoffMs
+        );
+        if (group.length) batches.push({ entries: group });
+        prevMs = cutoffMs;
+      }
+      const tailGroup = activeEntries.filter(
+        (e) => e.recordedAtMs !== null && e.recordedAtMs >= prevMs
+      );
+      if (tailGroup.length) batches.push({ entries: tailGroup });
+
+      return batches.map((batch, idx) => {
+        const oldestIso = getOldestEntryIso(batch.entries);
+        const dateTag = oldestIso.slice(0, 10);
+        return {
+          entries: batch.entries,
+          suffix: `-${idx + 1}-${dateTag}`,
+        };
+      });
+    }
+
+    function getSortedLoadedEntries() {
+      const dir = fileSortDirection === "asc" ? 1 : -1;
+      return [...loadedEntries].sort((a, b) => {
+        let cmp = 0;
+        if (fileSortColumn === "fileName") {
+          cmp = a.fileName.localeCompare(b.fileName, undefined, { sensitivity: "base" });
+        } else if (fileSortColumn === "name") {
+          const nameA = typeof a.data.name === "string" && a.data.name.trim() ? a.data.name.trim() : "";
+          const nameB = typeof b.data.name === "string" && b.data.name.trim() ? b.data.name.trim() : "";
+          cmp = nameA.localeCompare(nameB, undefined, { sensitivity: "base" });
+        } else if (fileSortColumn === "recordedAt") {
+          const msA = a.recordedAtMs;
+          const msB = b.recordedAtMs;
+          if (msA === null && msB === null) cmp = 0;
+          else if (msA === null) cmp = 1;
+          else if (msB === null) cmp = -1;
+          else cmp = msA - msB;
+        } else if (fileSortColumn === "visibility") {
+          cmp = Number(b.enabled) - Number(a.enabled);
+        }
+        if (cmp === 0) {
+          cmp = a.fileName.localeCompare(b.fileName, undefined, { sensitivity: "base" });
+        }
+        return cmp * dir;
+      });
+    }
+
+    function toggleFileSort(column) {
+      if (fileSortColumn === column) {
+        fileSortDirection = fileSortDirection === "asc" ? "desc" : "asc";
+      } else {
+        fileSortColumn = column;
+        fileSortDirection = "asc";
+      }
+      renderFileGrid();
+    }
+
+    function renderFileGrid() {
+      fileGrid.innerHTML = "";
+      const activeCount = loadedEntries.filter((e) => e.enabled).length;
+      filesPaneMeta.textContent = `${activeCount} shown of ${loadedEntries.length} files`;
+
+      const sortArrow = (col) => {
+        if (fileSortColumn !== col) return "";
+        return fileSortDirection === "asc" ? " ▲" : " ▼";
+      };
+
+      const table = document.createElement("table");
+      table.className = "file-table";
+      table.innerHTML = `<thead><tr>
+        <th class="sortable-th" data-sort-col="fileName" title="Click to sort by File">File${sortArrow("fileName")}</th>
+        <th class="sortable-th" data-sort-col="name" title="Click to sort by Name">Name${sortArrow("name")}</th>
+        <th class="sortable-th" data-sort-col="recordedAt" title="Click to sort by Recorded At">Recorded At${sortArrow("recordedAt")}</th>
+        <th class="sortable-th" data-sort-col="visibility" title="Click to sort by Visibility">Visibility${sortArrow("visibility")}</th>
+        <th>Actions</th>
+      </tr></thead>`;
+      table.querySelectorAll("th.sortable-th").forEach((th) => {
+        th.addEventListener("click", () => toggleFileSort(th.dataset.sortCol));
+      });
+
+      const tbody = document.createElement("tbody");
+
+      for (const entry of getSortedLoadedEntries()) {
+        const dateText = parseRecordedAt(entry.recordedAtRaw).display;
+        const dataName = typeof entry.data.name === "string" && entry.data.name.trim()
+          ? entry.data.name.trim()
+          : "—";
+        const tr = document.createElement("tr");
+        if (!entry.enabled) tr.className = "disabled-file";
+        const visibility = entry.enabled ? "Hide" : "Show";
+        tr.innerHTML = `
+          <td class="file-name">${escapeHtml(entry.fileName)}</td>
+          <td>${escapeHtml(dataName)}</td>
+          <td>${escapeHtml(dateText)}</td>
+          <td><button class="btn visibility-btn" type="button">${visibility}</button></td>
+          <td class="file-actions"><button class="btn btn-danger remove-file-btn" type="button">Remove</button></td>
+        `;
+        tr.querySelector(".visibility-btn").addEventListener("click", () => {
+          entry.enabled = !entry.enabled;
+          render();
+        });
+        tr.querySelector(".remove-file-btn").addEventListener("click", () => {
+          loadedEntries = loadedEntries.filter((e) => e.id !== entry.id);
+          render();
+        });
+        tbody.appendChild(tr);
+      }
+      table.appendChild(tbody);
+      fileGrid.appendChild(table);
+    }
+
+    function renderSourceThumb(sourceName) {
+      const url = getSourceMetadata(sourceName).imageUrl;
+      const initials = escapeHtml(sourceName.slice(0, 2).toUpperCase());
+      if (!url) {
+        return `<span class="source-thumb-placeholder" title="No image mapped yet">${initials}</span>`;
+      }
+      return `
+        <img
+          class="source-thumb"
+          src="${escapeHtml(url)}"
+          alt="${escapeHtml(sourceName)}"
+          loading="lazy"
+          onerror="this.outerHTML='<span class=\\'source-thumb-placeholder\\' title=\\'Image failed to load\\'>${initials}</span>';"
+        />
+      `;
+    }
+
+    function isValidDateString(value) {
+      if (!/^\d{4}-\d{2}-\d{2}$/.test(String(value || ""))) return false;
+      const [year, month, day] = value.split("-").map(Number);
+      const date = new Date(Date.UTC(year, month - 1, day));
+      return date.getUTCFullYear() === year && date.getUTCMonth() === month - 1 && date.getUTCDate() === day;
+    }
+
+    function loadItemConfigs() {
+      try {
+        const parsed = JSON.parse(localStorage.getItem("doggi-item-configs-v1") || "[]");
+        return Array.isArray(parsed)
+          ? parsed.filter((x) => x && typeof x.name === "string" && isValidDateString(x.date))
+          : [];
+      } catch {
+        return [];
+      }
+    }
+
+    function saveItemConfigs() {
+      try {
+        localStorage.setItem(ITEM_CONFIG_STORAGE_KEY, JSON.stringify(itemConfigs));
+      } catch (err) {
+        showError("Your browser could not save item configs locally. Check its site storage/privacy settings.");
+      }
+    }
+
+    function getItemConfig(itemName) {
+      const key = String(itemName || "").trim().toLowerCase();
+      return itemConfigs.find((config) => config.name.trim().toLowerCase() === key) || null;
+    }
+
+    function renderItemConfigGrid() {
+      itemConfigGrid.innerHTML = "";
+      if (!itemConfigs.length) {
+        itemConfigGrid.textContent = "No item configurations yet.";
+        return;
+      }
+      const table = document.createElement("table");
+      table.className = "file-table";
+      table.innerHTML = `<thead><tr><th>Item Name</th><th>Date Added</th><th>Actions</th></tr></thead>`;
+      const tbody = document.createElement("tbody");
+      for (const config of itemConfigs) {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `<td>${escapeHtml(config.name)}</td><td>${escapeHtml(config.date)}</td><td><button class="btn btn-danger" type="button">Remove</button></td>`;
+        tr.querySelector("button").addEventListener("click", () => {
+          itemConfigs = itemConfigs.filter((x) => x !== config);
+          saveItemConfigs();
+          renderItemConfigGrid();
+          render();
+        });
+        tbody.appendChild(tr);
+      }
+      table.appendChild(tbody);
+      itemConfigGrid.appendChild(table);
+    }
+
+    const viewTabs = Array.from(document.querySelectorAll(".view-tab"));
+    const viewPanels = Array.from(document.querySelectorAll(".view-panel"));
+
+    function activateView(viewId) {
+      viewTabs.forEach((tab) => {
+        const active = tab.dataset.view === viewId;
+        tab.classList.toggle("active", active);
+        tab.setAttribute("aria-selected", String(active));
+        tab.tabIndex = active ? 0 : -1;
+      });
+      viewPanels.forEach((panel) => {
+        panel.hidden = panel.id !== viewId;
+      });
+      if (viewId === "viewLoadedFiles") renderFileGrid();
+      if (viewId === "viewItemConfigs") renderItemConfigGrid();
+    }
+
+    viewTabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => activateView(tab.dataset.view));
+      tab.addEventListener("keydown", (event) => {
+        if (!["ArrowLeft", "ArrowRight", "Home", "End"].includes(event.key)) return;
+        event.preventDefault();
+        let next = index;
+        if (event.key === "ArrowRight") next = (index + 1) % viewTabs.length;
+        if (event.key === "ArrowLeft") next = (index - 1 + viewTabs.length) % viewTabs.length;
+        if (event.key === "Home") next = 0;
+        if (event.key === "End") next = viewTabs.length - 1;
+        viewTabs[next].focus();
+        activateView(viewTabs[next].dataset.view);
+      });
+    });
+
+    function csvEscape(value) {
+      const text = String(value ?? "");
+      return /[",\r\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
+    }
+
+    function parseCsv(text) {
+      const rows = [];
+      let row = [], cell = "", quoted = false;
+      for (let i = 0; i < text.length; i++) {
+        const ch = text[i];
+        if (quoted) {
+          if (ch === '"' && text[i + 1] === '"') { cell += '"'; i++; }
+          else if (ch === '"') quoted = false;
+          else cell += ch;
+        } else if (ch === '"') quoted = true;
+        else if (ch === ",") { row.push(cell); cell = ""; }
+        else if (ch === "\n") { row.push(cell); rows.push(row); row = []; cell = ""; }
+        else if (ch !== "\r") cell += ch;
+      }
+      if (cell.length || row.length) { row.push(cell); rows.push(row); }
+      return rows;
+    }
+
+    function downloadTextFile(filename, content, type) {
+      const blob = new Blob([content], { type });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    function getConfiguredItemStats(sourceName, itemName, activeEntries, defaultCount, defaultQty) {
+      const config = getItemConfig(itemName);
+      if (!config) return { count: defaultCount, quantity: defaultQty };
+
+      const cutoffMs = Date.parse(`${config.date}T00:00:00`);
+      let count = 0;
+      let quantity = 0;
+      for (const entry of activeEntries) {
+        if (entry.recordedAtMs === null || entry.recordedAtMs < cutoffMs) continue;
+        const pair = Object.entries(entry.data.sources || {}).find(
+          ([name]) => name.toLowerCase() === sourceName.toLowerCase()
+        );
+        if (!pair) continue;
+        const details = pair[1] || {};
+        count += Number(details.count || 0);
+        for (const item of details.items || []) {
+          if (item && String(item.name || "").trim().toLowerCase() === itemName.toLowerCase()) {
+            quantity += Number(item.quantity ?? 1);
+          }
+        }
+      }
+      return { count, quantity };
+    }
+
+    // Bayesian credible interval using a uniform Beta(1,1) prior.
+    // The observed drop count is treated as binomial successes out of opportunities.
+    function logGamma(z) {
+      const coefficients = [
+        676.5203681218851, -1259.1392167224028, 771.3234287776531,
+        -176.6150291621406, 12.507343278686905, -0.13857109526572012,
+        9.984369578019572e-6, 1.5056327351493116e-7
+      ];
+      if (z < 0.5) return Math.log(Math.PI) - Math.log(Math.sin(Math.PI * z)) - logGamma(1 - z);
+      z -= 1;
+      let x = 0.9999999999998099;
+      for (let i = 0; i < coefficients.length; i++) x += coefficients[i] / (z + i + 1);
+      const t = z + coefficients.length - 0.5;
+      return 0.5 * Math.log(2 * Math.PI) + (z + 0.5) * Math.log(t) - t + Math.log(x);
+    }
+
+    function betaContinuedFraction(a, b, x) {
+      const maxIterations = 200;
+      const epsilon = 3e-14;
+      const tiny = 1e-300;
+      const qab = a + b, qap = a + 1, qam = a - 1;
+      let c = 1;
+      let d = 1 - qab * x / qap;
+      if (Math.abs(d) < tiny) d = tiny;
+      d = 1 / d;
+      let h = d;
+      for (let m = 1; m <= maxIterations; m++) {
+        const m2 = 2 * m;
+        let aa = m * (b - m) * x / ((qam + m2) * (a + m2));
+        d = 1 + aa * d; if (Math.abs(d) < tiny) d = tiny;
+        c = 1 + aa / c; if (Math.abs(c) < tiny) c = tiny;
+        d = 1 / d; h *= d * c;
+        aa = -(a + m) * (qab + m) * x / ((a + m2) * (qap + m2));
+        d = 1 + aa * d; if (Math.abs(d) < tiny) d = tiny;
+        c = 1 + aa / c; if (Math.abs(c) < tiny) c = tiny;
+        d = 1 / d;
+        const delta = d * c;
+        h *= delta;
+        if (Math.abs(delta - 1) < epsilon) break;
+      }
+      return h;
+    }
+
+    function regularizedBeta(x, a, b) {
+      if (x <= 0) return 0;
+      if (x >= 1) return 1;
+      const logFront = logGamma(a + b) - logGamma(a) - logGamma(b)
+        + a * Math.log(x) + b * Math.log1p(-x);
+      const front = Math.exp(logFront);
+      if (x < (a + 1) / (a + b + 2)) {
+        return front * betaContinuedFraction(a, b, x) / a;
+      }
+      return 1 - front * betaContinuedFraction(b, a, 1 - x) / b;
+    }
+
+    function betaQuantile(probability, a, b) {
+      let low = 0, high = 1;
+      for (let i = 0; i < 90; i++) {
+        const mid = (low + high) / 2;
+        if (regularizedBeta(mid, a, b) < probability) low = mid;
+        else high = mid;
+      }
+      return (low + high) / 2;
+    }
+
+    function getDropCredibleInterval(drops, opportunities, confidence = 0.90) {
+      const trials = Math.max(0, Math.floor(opportunities));
+      const successes = Math.max(0, Math.min(trials, Math.floor(drops)));
+      if (!trials) return null;
+      const a = successes + 1;
+      const b = trials - successes + 1;
+      const tail = (1 - confidence) / 2;
+      return {
+        lower: betaQuantile(tail, a, b) * 100,
+        upper: betaQuantile(1 - tail, a, b) * 100
+      };
+    }
+
+    function getConfidenceClass(interval, drops, opportunities) {
+      if (!interval || opportunities <= 0) return "confidence-low";
+      // Judge uncertainty relative to the estimated probability, not in raw
+      // percentage points. This avoids treating rare drops as highly certain
+      // merely because their interval is narrow in absolute terms.
+      const posteriorMean = ((drops + 1) / (opportunities + 2)) * 100;
+      const relativeWidth = (interval.upper - interval.lower) / Math.max(posteriorMean, 0.000001);
+      if (relativeWidth <= 0.60) return "confidence-high";
+      if (relativeWidth <= 1.20) return "confidence-medium";
+      return "confidence-low";
+    }
+
+    function render() {
+      const hasAnyFiles = loadedEntries.length > 0;
+      filesPane.style.display = hasAnyFiles ? "block" : "none";
+      controls.style.display = hasAnyFiles ? "flex" : "none";
+      summary.style.display = hasAnyFiles ? "grid" : "none";
+      sourcesHeading.style.display = hasAnyFiles ? "block" : "none";
+
+      if (!hasAnyFiles) {
+        fileGrid.innerHTML = "";
+        resultsEl.innerHTML = "";
+        return;
+      }
+
+      renderFileGrid();
+
+      const activeEntries = getActiveEntries();
+      const master = mergeActiveSources(activeEntries);
+      const query = searchInput.value.trim().toLowerCase();
+      const mode = "perCount";
+      const sort = sortBy.value;
+
+      let totalEncounters = 0;
+      let totalItems = 0;
+      for (const info of Object.values(master)) {
+        totalEncounters += info.count;
+        totalItems += Object.values(info.items).reduce((a, b) => a + b, 0);
+      }
+
+      document.getElementById("statFiles").textContent = `${activeEntries.length} / ${loadedEntries.length}`;
+      document.getElementById("statSources").textContent = Object.keys(master).length;
+      document.getElementById("statEncounters").textContent = totalEncounters.toLocaleString();
+      document.getElementById("statItems").textContent = totalItems.toLocaleString();
+
+      let entries = Object.entries(master).filter(([sourceName, info]) => {
+        const meta = getSourceMetadata(sourceName);
+        if (!selectedTypes.has(meta.type)) return false;
+        if (!query) return true;
+        if (sourceName.toLowerCase().includes(query) || String(meta.name).toLowerCase().includes(query)) return true;
+        return Object.keys(info.items).some((item) => item.toLowerCase().includes(query));
+      });
+
+      if (sort === "countDesc") {
+        entries.sort((a, b) => b[1].count - a[1].count || getSourceMetadata(a[0]).name.localeCompare(getSourceMetadata(b[0]).name));
+      } else {
+        entries.sort((a, b) => getSourceMetadata(a[0]).name.localeCompare(getSourceMetadata(b[0]).name) || a[0].localeCompare(b[0]));
+      }
+
+      resultsEl.innerHTML = entries
+        .map(([sourceName, info]) => {
+          const sourceType = getSourceMetadata(sourceName).type;
+          const itemEntries = Object.entries(info.items).map(([itemName, qty]) => {
+            const itemStats = getConfiguredItemStats(sourceName, itemName, activeEntries, info.count, qty);
+            const itemDenominator = itemStats.count;
+            const itemQuantity = itemStats.quantity;
+            const pct = itemDenominator > 0 ? (itemQuantity / itemDenominator) * 100 : 0;
+            const interval = getDropCredibleInterval(itemQuantity, itemDenominator);
+            return { itemName, qty, itemDenominator, itemQuantity, pct, interval };
+          }).sort((a, b) => b.pct - a.pct || a.itemName.localeCompare(b.itemName));
+          const poolTotal = itemEntries.reduce((sum, item) => sum + item.qty, 0);
+          const denominator = mode === "poolShare" ? poolTotal : info.count;
+
+          const itemsHtml =
+            itemEntries.length === 0
+              ? `<p class="empty-items">No items recorded</p>`
+              : `<ul class="item-list">
+                  ${itemEntries
+                    .map(({ itemName, itemDenominator, itemQuantity, pct, interval }) => {
+                      const barWidth = Math.min(pct, 100);
+                      const ratioText = formatOneInX(itemQuantity, itemDenominator);
+                      const confidenceClass = getConfidenceClass(interval, itemQuantity, itemDenominator);
+                      const interval95 = getDropCredibleInterval(itemQuantity, itemDenominator, 0.95);
+                      const interval70 = getDropCredibleInterval(itemQuantity, itemDenominator, 0.70);
+                      const interval50 = getDropCredibleInterval(itemQuantity, itemDenominator, 0.50);
+                      const formatInterval = (value) => value
+                        ? `${formatChancePct(value.lower)} – ${formatChancePct(value.upper)}`
+                        : "not estimable";
+                      const formatEndpointOdds = (percentage) => percentage > 0
+                        ? Math.round(100 / percentage).toLocaleString()
+                        : "∞";
+                      const warningText = confidenceClass === "confidence-low" ? "⚠️ Needs more data!\n" : "";
+                      const tooltip = `${itemQuantity.toLocaleString()} drops out of ${itemDenominator.toLocaleString()} eligible opportunities.\n${warningText}95% likely chance is between ${interval95 ? formatChancePct(interval95.lower) : "N/A"} (1/${interval95 ? formatEndpointOdds(interval95.lower) : "N/A"}) and ${interval95 ? formatChancePct(interval95.upper) : "N/A"} (1/${interval95 ? formatEndpointOdds(interval95.upper) : "N/A"}).`;
+                      let displayText;
+                      let displayClass = "";
+                      let ratioDisplay = `<span class="item-ratio">(${ratioText})</span>`;
+                      if (confidenceTarget.value === "95") {
+                        displayText = formatInterval(interval95);
+                        displayClass = "confidence-neutral";
+                        ratioDisplay = "";
+                      } else if (confidenceTarget.value === "70") {
+                        displayText = formatInterval(interval70);
+                        displayClass = "confidence-neutral";
+                        ratioDisplay = "";
+                      } else if (confidenceTarget.value === "50") {
+                        displayText = formatInterval(interval50);
+                        displayClass = "confidence-neutral";
+                        ratioDisplay = "";
+                      } else {
+                        displayText = formatChancePct(pct);
+                      }
+                      const rarityClass = highlightRarity.checked && (sourceType === "enemy" || sourceType === "boss" || sourceType === "chest")
+                        ? (pct >= 70 ? "rarity-very-common" : pct >= 3 ? "rarity-common" : pct >= 0.8 ? "rarity-uncommon" : pct >= 0.08 ? "rarity-rare" : pct >= 0.01 ? "rarity-very-rare" : "rarity-ultra-rare")
+                        : "";
+                      const warningIcon = confidenceClass === "confidence-low"
+                        ? '<span class="confidence-warning" title="Needs more data" aria-label="Needs more data">⚠️</span>' : "";
+                      return `
+                        <li class="item-row" data-tooltip="${escapeHtml(tooltip)}" tabindex="0">
+                          <div class="item-meta">
+                            <span>${escapeHtml(itemName)}</span>
+                            <span>
+                              ${warningIcon}<span class="item-pct ${displayClass} ${rarityClass}">${displayText}</span>
+                              ${ratioDisplay}
+                            </span>
+                          </div>
+                          <div class="bar-bg">
+                            <div class="bar-fill" style="width: ${barWidth}%"></div>
+                          </div>
+                        </li>
+                      `;
+                    })
+                    .join("")}
+                </ul>`;
+
+          return `
+            <div class="source-card">
+              <div class="source-header">
+                <div class="source-title-group">
+                  ${renderSourceThumb(sourceName)}
+                  <span>
+                    <span class="source-title">${escapeHtml(getSourceMetadata(sourceName).name)}</span>
+                    <span class="source-type">${escapeHtml(getSourceMetadata(sourceName).type)}</span>
+                  </span>
+                </div>
+                <span class="source-count">Count: ${info.count.toLocaleString()}</span>
+              </div>
+              ${itemsHtml}
+            </div>
+          `;
+        })
+        .join("");
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    renderItemConfigGrid();
+
+    searchInput.addEventListener("input", render);
+    sortBy.addEventListener("change", render);
+    typeToggleButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const type = button.dataset.sourceType;
+        if (selectedTypes.has(type)) selectedTypes.delete(type);
+        else selectedTypes.add(type);
+        button.setAttribute("aria-pressed", String(selectedTypes.has(type)));
+        render();
+      });
+    });
+
+    dateFrom.addEventListener("change", () => {
+      applyDateFilterToCheckboxes();
+      render();
+    });
+
+    dateTo.addEventListener("change", () => {
+      applyDateFilterToCheckboxes();
+      render();
+    });
+
+    enableAllFilesBtn.addEventListener("click", () => {
+      for (const entry of loadedEntries) entry.enabled = true;
+      render();
+    });
+
+    hideAllFilesBtn.addEventListener("click", () => {
+      for (const entry of loadedEntries) entry.enabled = false;
+      render();
+    });
+
+    removeAllFilesBtn.addEventListener("click", () => {
+      loadedEntries = [];
+      showError("");
+      render();
+    });
+
+    resetDatesBtn.addEventListener("click", () => {
+      dateFrom.value = "";
+      dateTo.value = "";
+      for (const entry of loadedEntries) {
+        entry.enabled = true;
+      }
+      render();
+    });
+
+    itemConfigForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const name = itemConfigName.value.trim();
+      const date = itemConfigDate.value;
+      if (!name || !isValidDateString(date)) return;
+      const existing = getItemConfig(name);
+      if (existing) {
+        existing.name = name;
+        existing.date = date;
+      } else {
+        itemConfigs.push({ name, date });
+      }
+      itemConfigs.sort((a, b) => a.name.localeCompare(b.name));
+      saveItemConfigs();
+      itemConfigForm.reset();
+      renderItemConfigGrid();
+      render();
+    });
+
+    exportItemConfigsBtn.addEventListener("click", () => {
+      const rows = [["item name", "date added"], ...itemConfigs.map((x) => [x.name, x.date])];
+      const csv = rows.map((row) => row.map(csvEscape).join(",")).join("\r\n");
+      downloadTextFile("DOGGI-Item-Configs.csv", csv, "text/csv;charset=utf-8");
+    });
+
+    importItemConfigsBtn.addEventListener("click", () => itemConfigFileInput.click());
+    itemConfigFileInput.addEventListener("change", async () => {
+      const file = itemConfigFileInput.files && itemConfigFileInput.files[0];
+      if (!file) return;
+      try {
+        const rows = parseCsv(await file.text());
+        if (!rows.length) throw new Error("The CSV is empty.");
+        const header = rows[0].map((x) => x.trim().toLowerCase());
+        const nameIndex = header.indexOf("item name");
+        const dateIndex = header.indexOf("date added");
+        if (nameIndex < 0 || dateIndex < 0) {
+          throw new Error('CSV must include "item name" and "date added" columns.');
+        }
+        const imported = new Map(itemConfigs.map((x) => [x.name.toLowerCase(), x]));
+        for (const row of rows.slice(1)) {
+          const name = String(row[nameIndex] || "").trim();
+          const date = String(row[dateIndex] || "").trim();
+          if (!name || !isValidDateString(date)) continue;
+          imported.set(name.toLowerCase(), { name, date });
+        }
+        itemConfigs = Array.from(imported.values()).sort((a, b) => a.name.localeCompare(b.name));
+        saveItemConfigs();
+        renderItemConfigGrid();
+        render();
+        showError("");
+      } catch (err) {
+        showError(`Could not load item config CSV: ${err.message}`);
+      } finally {
+        itemConfigFileInput.value = "";
+      }
+    });
+
+    exportBtn.addEventListener("click", () => {
+      const activeEntries = getActiveEntries();
+      if (!activeEntries.length) {
+        showError("No enabled files to export.");
+        return;
+      }
+
+      const distinctNames = Array.from(
+        new Set(
+          activeEntries
+            .map((e) => (typeof e.data.name === "string" ? e.data.name.trim() : ""))
+            .filter(Boolean)
+        )
+      );
+      const exportName = distinctNames.length === 1 ? distinctNames[0] : "Master";
+      const batches = getExportBatches(activeEntries);
+
+      batches.forEach((batch, index) => {
+        const payload = buildDoggiMasterPayload(batch.entries, exportName, {
+          excludeItemBeforeCutoff: true,
+        });
+        const fileName = `DOGGI-${exportName}${batch.suffix}.json`;
+        const triggerDownload = () => {
+          downloadTextFile(fileName, JSON.stringify(payload, null, 2), "application/json");
+        };
+        if (index === 0) triggerDownload();
+        else setTimeout(triggerDownload, index * 150);
+      });
+    });
+  </script>
+</body>
+</html>
