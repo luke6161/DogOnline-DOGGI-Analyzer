@@ -1,0 +1,2219 @@
+{
+  "sources": {
+    "Aheemheem": {
+      "count": 5598,
+      "items": [
+        {
+          "name": "Sweet Peas",
+          "quantity": 556
+        },
+        {
+          "name": "Dango Throwing Spear",
+          "quantity": 281
+        },
+        {
+          "name": "Crystal Tear",
+          "quantity": 63
+        },
+        {
+          "name": "Aheemheem's Sobbers",
+          "quantity": 3
+        }
+      ]
+    },
+    "Alchemist": {
+      "count": 174,
+      "items": [
+        {
+          "name": "Alchemist's Wooden Spoon",
+          "quantity": 174
+        },
+        {
+          "name": "The Alchemist's Handbook",
+          "quantity": 66
+        }
+      ]
+    },
+    "Balloon": {
+      "count": 881,
+      "items": [
+        {
+          "name": "Soda",
+          "quantity": 798
+        },
+        {
+          "name": "Red Balloon",
+          "quantity": 796
+        },
+        {
+          "name": "Chicken Leg",
+          "quantity": 78
+        },
+        {
+          "name": "Taco",
+          "quantity": 68
+        },
+        {
+          "name": "Hotted Dog",
+          "quantity": 39
+        },
+        {
+          "name": "Blue Balloon",
+          "quantity": 38
+        },
+        {
+          "name": "Peanut Butter",
+          "quantity": 24
+        },
+        {
+          "name": "Dog Dice",
+          "quantity": 14
+        },
+        {
+          "name": "Balloon Animal",
+          "quantity": 3
+        }
+      ]
+    },
+    "Barraskewer": {
+      "count": 8560,
+      "items": [
+        {
+          "name": "Sizzling Spear",
+          "quantity": 844
+        },
+        {
+          "name": "Baraskewer Buddy",
+          "quantity": 2
+        },
+        {
+          "name": "Baraskewer Fins",
+          "quantity": 1
+        },
+        {
+          "name": "Barraskewer Tail",
+          "quantity": 1
+        }
+      ]
+    },
+    "Bigmittsmolly": {
+      "count": 4503,
+      "items": [
+        {
+          "name": "Molly's Big Mitts",
+          "quantity": 1
+        }
+      ]
+    },
+    "Bigsnodawg": {
+      "count": 89,
+      "items": [
+        {
+          "name": "Ice Pick",
+          "quantity": 6
+        },
+        {
+          "name": "Enchanted Snowflake",
+          "quantity": 2
+        },
+        {
+          "name": "Demon Doggy Ice Wand",
+          "quantity": 1
+        }
+      ]
+    },
+    "Booby Trap": {
+      "count": 5703,
+      "items": [
+        {
+          "name": "Wicked Skymetal Hook",
+          "quantity": 5052
+        },
+        {
+          "name": "Arrow Feather",
+          "quantity": 4040
+        },
+        {
+          "name": "Vicious Steel Jaw",
+          "quantity": 2879
+        },
+        {
+          "name": "Lightning-Infused Jaw Bolt",
+          "quantity": 1705
+        },
+        {
+          "name": "Food Token",
+          "quantity": 61
+        },
+        {
+          "name": "Clothes Token",
+          "quantity": 33
+        },
+        {
+          "name": "Reading Token",
+          "quantity": 26
+        },
+        {
+          "name": "Weapons Token",
+          "quantity": 10
+        },
+        {
+          "name": "Metal Maws",
+          "quantity": 2
+        }
+      ]
+    },
+    "Bookshelf": {
+      "count": 1263,
+      "items": [
+        {
+          "name": "The Big Book",
+          "quantity": 82
+        },
+        {
+          "name": "Airship Ticket",
+          "quantity": 78
+        },
+        {
+          "name": "Booboo Book",
+          "quantity": 74
+        },
+        {
+          "name": "Broken Dogpet Toy",
+          "quantity": 74
+        },
+        {
+          "name": "Bottle Cap",
+          "quantity": 73
+        },
+        {
+          "name": "A Single Marble",
+          "quantity": 69
+        },
+        {
+          "name": "Enchanted Chain",
+          "quantity": 69
+        },
+        {
+          "name": "Dog Braille for Beginners",
+          "quantity": 68
+        },
+        {
+          "name": "Dentist Book",
+          "quantity": 66
+        },
+        {
+          "name": "Angry Book",
+          "quantity": 63
+        },
+        {
+          "name": "Dog Dice",
+          "quantity": 63
+        },
+        {
+          "name": "Wizard Book",
+          "quantity": 63
+        },
+        {
+          "name": "Enchanted Band",
+          "quantity": 62
+        },
+        {
+          "name": "Porcelain Gnome Head",
+          "quantity": 56
+        },
+        {
+          "name": "The Word of DOG",
+          "quantity": 52
+        },
+        {
+          "name": "Anarchist's Cookbook",
+          "quantity": 32
+        },
+        {
+          "name": "Sapphire",
+          "quantity": 21
+        },
+        {
+          "name": "Cow Tool",
+          "quantity": 19
+        },
+        {
+          "name": "Topaz",
+          "quantity": 19
+        },
+        {
+          "name": "Enchanted Plunger",
+          "quantity": 17
+        },
+        {
+          "name": "The Alchemist's Handbook",
+          "quantity": 17
+        },
+        {
+          "name": "Very Cool Stick",
+          "quantity": 15
+        },
+        {
+          "name": "Tarnished Frisbee",
+          "quantity": 14
+        },
+        {
+          "name": "Onyx",
+          "quantity": 13
+        },
+        {
+          "name": "The Navidogson Record",
+          "quantity": 10
+        },
+        {
+          "name": "The Tome of Messages",
+          "quantity": 10
+        },
+        {
+          "name": "DOGSHA Handbook",
+          "quantity": 9
+        },
+        {
+          "name": "Food Token",
+          "quantity": 9
+        },
+        {
+          "name": "Emerald",
+          "quantity": 7
+        },
+        {
+          "name": "Scaled Journal",
+          "quantity": 7
+        },
+        {
+          "name": "Weapons Token",
+          "quantity": 7
+        },
+        {
+          "name": "Clothes Token",
+          "quantity": 5
+        },
+        {
+          "name": "Reading Token",
+          "quantity": 5
+        },
+        {
+          "name": "Ruby Crystal Skull",
+          "quantity": 4
+        },
+        {
+          "name": "The Ochre Lord",
+          "quantity": 4
+        },
+        {
+          "name": "D20",
+          "quantity": 3
+        },
+        {
+          "name": "Emerald Crystal Skull",
+          "quantity": 3
+        },
+        {
+          "name": "Sapphire Crystal Skull",
+          "quantity": 1
+        }
+      ]
+    },
+    "Bootdog": {
+      "count": 4653,
+      "items": [
+        {
+          "name": "Old Boot",
+          "quantity": 4394
+        },
+        {
+          "name": "Broken Wing",
+          "quantity": 3704
+        },
+        {
+          "name": "Peanut Butter",
+          "quantity": 492
+        },
+        {
+          "name": "Mold Boot",
+          "quantity": 214
+        },
+        {
+          "name": "Ye Olde Boot",
+          "quantity": 200
+        },
+        {
+          "name": "Cheese Puffs",
+          "quantity": 198
+        },
+        {
+          "name": "Bold Boot",
+          "quantity": 186
+        },
+        {
+          "name": "Popcorn",
+          "quantity": 130
+        },
+        {
+          "name": "Chicken Leg",
+          "quantity": 101
+        },
+        {
+          "name": "Fortune Cookie",
+          "quantity": 90
+        },
+        {
+          "name": "Lucky Coin",
+          "quantity": 39
+        },
+        {
+          "name": "Boot Dogs Boots",
+          "quantity": 35
+        },
+        {
+          "name": "D20",
+          "quantity": 32
+        },
+        {
+          "name": "Gold Boot",
+          "quantity": 15
+        },
+        {
+          "name": "Cloud Wings",
+          "quantity": 1
+        },
+        {
+          "name": "The Big Boot",
+          "quantity": 1
+        }
+      ]
+    },
+    "Clouddoggy": {
+      "count": 6846,
+      "items": [
+        {
+          "name": "Sky Tackle",
+          "quantity": 6841
+        },
+        {
+          "name": "Baby Storm Cloud",
+          "quantity": 5131
+        },
+        {
+          "name": "Clouddoggy Wisp",
+          "quantity": 335
+        },
+        {
+          "name": "Everthundering Cloud",
+          "quantity": 134
+        },
+        {
+          "name": "Arcbolt Bow",
+          "quantity": 127
+        },
+        {
+          "name": "Crackling Blade",
+          "quantity": 115
+        },
+        {
+          "name": "Cloudy Clouds",
+          "quantity": 1
+        }
+      ]
+    },
+    "Cookie Nightjar": {
+      "count": 124,
+      "items": [
+        {
+          "name": "Cookie Dough",
+          "quantity": 118
+        },
+        {
+          "name": "Sugar Cookie",
+          "quantity": 44
+        },
+        {
+          "name": "Vanilla Cookies",
+          "quantity": 43
+        },
+        {
+          "name": "Chocolate Chip Cookie",
+          "quantity": 38
+        },
+        {
+          "name": "Pawprint Cookie",
+          "quantity": 12
+        },
+        {
+          "name": "Chocolate-Chip Battleaxe",
+          "quantity": 6
+        }
+      ]
+    },
+    "Cooler": {
+      "count": 2391,
+      "items": [
+        {
+          "name": "Sapphire",
+          "quantity": 247
+        },
+        {
+          "name": "Onyx",
+          "quantity": 233
+        },
+        {
+          "name": "A Single Marble",
+          "quantity": 213
+        },
+        {
+          "name": "Dog Dice",
+          "quantity": 203
+        },
+        {
+          "name": "Porcelain Gnome Head",
+          "quantity": 190
+        },
+        {
+          "name": "Enchanted Chain",
+          "quantity": 186
+        },
+        {
+          "name": "Bottle Cap",
+          "quantity": 183
+        },
+        {
+          "name": "Enchanted Band",
+          "quantity": 182
+        },
+        {
+          "name": "Broken Dogpet Toy",
+          "quantity": 178
+        },
+        {
+          "name": "D20",
+          "quantity": 46
+        },
+        {
+          "name": "Emerald",
+          "quantity": 45
+        },
+        {
+          "name": "Topaz",
+          "quantity": 45
+        },
+        {
+          "name": "Doggy Ice Sculpture",
+          "quantity": 43
+        },
+        {
+          "name": "Cow Tool",
+          "quantity": 42
+        },
+        {
+          "name": "Weapons Token",
+          "quantity": 40
+        },
+        {
+          "name": "Food Token",
+          "quantity": 38
+        },
+        {
+          "name": "Tarnished Frisbee",
+          "quantity": 37
+        },
+        {
+          "name": "Very Cool Stick",
+          "quantity": 37
+        },
+        {
+          "name": "Reading Token",
+          "quantity": 36
+        },
+        {
+          "name": "Enchanted Plunger",
+          "quantity": 32
+        },
+        {
+          "name": "Clothes Token",
+          "quantity": 31
+        },
+        {
+          "name": "Permafrost Shurikens",
+          "quantity": 31
+        },
+        {
+          "name": "Airship Ticket",
+          "quantity": 30
+        },
+        {
+          "name": "Sapphire Crystal Skull",
+          "quantity": 21
+        },
+        {
+          "name": "Emerald Crystal Skull",
+          "quantity": 12
+        },
+        {
+          "name": "Ruby Crystal Skull",
+          "quantity": 10
+        }
+      ]
+    },
+    "Creeper": {
+      "count": 397,
+      "items": [
+        {
+          "name": "Creeper Egg",
+          "quantity": 1081
+        },
+        {
+          "name": "Cheese",
+          "quantity": 86
+        },
+        {
+          "name": "Peeper's Beeper",
+          "quantity": 2
+        }
+      ]
+    },
+    "Cronybones": {
+      "count": 47,
+      "items": []
+    },
+    "Cubeslime": {
+      "count": 228,
+      "items": [
+        {
+          "name": "Dogslime Slimecube",
+          "quantity": 228
+        },
+        {
+          "name": "Greasy Peashooter",
+          "quantity": 10
+        },
+        {
+          "name": "Slimitar",
+          "quantity": 6
+        },
+        {
+          "name": "Sludge Poppet",
+          "quantity": 1
+        }
+      ]
+    },
+    "Cursed Conjuror": {
+      "count": 718,
+      "items": [
+        {
+          "name": "Cursed Flame",
+          "quantity": 644
+        },
+        {
+          "name": "Misfortune Cookie",
+          "quantity": 164
+        },
+        {
+          "name": "Sinister Shadow",
+          "quantity": 31
+        },
+        {
+          "name": "Donut",
+          "quantity": 11
+        },
+        {
+          "name": "D20",
+          "quantity": 9
+        },
+        {
+          "name": "Accursed Mirror",
+          "quantity": 7
+        },
+        {
+          "name": "Plague Doctor Robe",
+          "quantity": 1
+        }
+      ]
+    },
+    "Da Bawss": {
+      "count": 47,
+      "items": [
+        {
+          "name": "Tales from The Lonely Tower II",
+          "quantity": 47
+        },
+        {
+          "name": "Black Fedora",
+          "quantity": 22
+        },
+        {
+          "name": "The Big Stogie",
+          "quantity": 19
+        },
+        {
+          "name": "Mobster Switchblade",
+          "quantity": 17
+        },
+        {
+          "name": "Timmy Gun",
+          "quantity": 14
+        }
+      ]
+    },
+    "Deadly Dogma": {
+      "count": 421,
+      "items": [
+        {
+          "name": "Bookmark",
+          "quantity": 312
+        },
+        {
+          "name": "Peanut Butter",
+          "quantity": 123
+        },
+        {
+          "name": "Dogmatic Seal",
+          "quantity": 119
+        },
+        {
+          "name": "Deadly Doom Book",
+          "quantity": 14
+        },
+        {
+          "name": "Reading Token",
+          "quantity": 5
+        }
+      ]
+    },
+    "Dingbat": {
+      "count": 289,
+      "items": [
+        {
+          "name": "Bell Shard",
+          "quantity": 289
+        },
+        {
+          "name": "Black Wings",
+          "quantity": 12
+        },
+        {
+          "name": "Red Wings",
+          "quantity": 11
+        },
+        {
+          "name": "Cold Steel Dagger",
+          "quantity": 5
+        }
+      ]
+    },
+    "Dogburger": {
+      "count": 1671,
+      "items": [
+        {
+          "name": "Sheet of Lettuce",
+          "quantity": 829
+        },
+        {
+          "name": "Coleslaw",
+          "quantity": 796
+        },
+        {
+          "name": "Chicken Nugget",
+          "quantity": 706
+        },
+        {
+          "name": "Slice of Cheese",
+          "quantity": 538
+        },
+        {
+          "name": "Pickle Buckler",
+          "quantity": 523
+        },
+        {
+          "name": "Bacon Battleaxe",
+          "quantity": 243
+        },
+        {
+          "name": "Tomato Chakram",
+          "quantity": 151
+        },
+        {
+          "name": "The Big Fry",
+          "quantity": 5
+        }
+      ]
+    },
+    "Dogre": {
+      "count": 413,
+      "items": [
+        {
+          "name": "Onion",
+          "quantity": 411
+        },
+        {
+          "name": "Parfait",
+          "quantity": 44
+        },
+        {
+          "name": "Dogre Plushie",
+          "quantity": 18
+        },
+        {
+          "name": "Rune Full Helm",
+          "quantity": 3
+        }
+      ]
+    },
+    "Dragon": {
+      "count": 4,
+      "items": [
+        {
+          "name": "Holy Cannoli",
+          "quantity": 1
+        },
+        {
+          "name": "Shadow Buddy",
+          "quantity": 1
+        }
+      ]
+    },
+    "Enormous Treasure": {
+      "count": 1499,
+      "items": [
+        {
+          "name": "Dog Dice",
+          "quantity": 114
+        },
+        {
+          "name": "Enchanted Band",
+          "quantity": 113
+        },
+        {
+          "name": "Bottle Cap",
+          "quantity": 109
+        },
+        {
+          "name": "Porcelain Gnome Head",
+          "quantity": 102
+        },
+        {
+          "name": "A Single Marble",
+          "quantity": 100
+        },
+        {
+          "name": "Huge Gold Tooth",
+          "quantity": 100
+        },
+        {
+          "name": "Broken Dogpet Toy",
+          "quantity": 97
+        },
+        {
+          "name": "Enchanted Chain",
+          "quantity": 85
+        },
+        {
+          "name": "One Dogbloon",
+          "quantity": 71
+        },
+        {
+          "name": "Golden Spatula",
+          "quantity": 66
+        },
+        {
+          "name": "D20",
+          "quantity": 42
+        },
+        {
+          "name": "Reading Token",
+          "quantity": 40
+        },
+        {
+          "name": "Clothes Token",
+          "quantity": 34
+        },
+        {
+          "name": "Molten Melting Sword",
+          "quantity": 31
+        },
+        {
+          "name": "Enchanted Plunger",
+          "quantity": 29
+        },
+        {
+          "name": "Weapons Token",
+          "quantity": 27
+        },
+        {
+          "name": "Sapphire",
+          "quantity": 25
+        },
+        {
+          "name": "Anubis Head",
+          "quantity": 24
+        },
+        {
+          "name": "Cow Tool",
+          "quantity": 24
+        },
+        {
+          "name": "Tarnished Frisbee",
+          "quantity": 23
+        },
+        {
+          "name": "Topaz",
+          "quantity": 23
+        },
+        {
+          "name": "Emerald",
+          "quantity": 22
+        },
+        {
+          "name": "Onyx",
+          "quantity": 21
+        },
+        {
+          "name": "Yum Egg",
+          "quantity": 21
+        },
+        {
+          "name": "Very Cool Stick",
+          "quantity": 20
+        },
+        {
+          "name": "Airship Ticket",
+          "quantity": 19
+        },
+        {
+          "name": "Red Toy Brick",
+          "quantity": 19
+        },
+        {
+          "name": "Sapphire Crystal Skull",
+          "quantity": 19
+        },
+        {
+          "name": "Yellow Toy Brick",
+          "quantity": 19
+        },
+        {
+          "name": "Ruby Crystal Skull",
+          "quantity": 18
+        },
+        {
+          "name": "Food Token",
+          "quantity": 17
+        },
+        {
+          "name": "Blue Toy Brick",
+          "quantity": 14
+        },
+        {
+          "name": "Emerald Crystal Skull",
+          "quantity": 11
+        }
+      ]
+    },
+    "Freak1": {
+      "count": 401,
+      "items": []
+    },
+    "Freezypup": {
+      "count": 585,
+      "items": [
+        {
+          "name": "Smooshed Ice Cream",
+          "quantity": 438
+        },
+        {
+          "name": "Cold Boot",
+          "quantity": 112
+        },
+        {
+          "name": "Blue Winter Scarf",
+          "quantity": 3
+        },
+        {
+          "name": "Red Winter Coat",
+          "quantity": 3
+        },
+        {
+          "name": "Snowflake Shirt",
+          "quantity": 3
+        },
+        {
+          "name": "Light Blue Winter Coat",
+          "quantity": 2
+        },
+        {
+          "name": "D20",
+          "quantity": 1
+        },
+        {
+          "name": "Lucky Coin",
+          "quantity": 1
+        },
+        {
+          "name": "Purple Winter Coat",
+          "quantity": 1
+        },
+        {
+          "name": "Red Winter Scarf",
+          "quantity": 1
+        }
+      ]
+    },
+    "Frostbiter": {
+      "count": 1345,
+      "items": [
+        {
+          "name": "Icyfang",
+          "quantity": 395
+        },
+        {
+          "name": "Throwing Icicle",
+          "quantity": 147
+        },
+        {
+          "name": "Enchanted Windup Key",
+          "quantity": 56
+        },
+        {
+          "name": "Dentist Book",
+          "quantity": 52
+        },
+        {
+          "name": "Cold Steel Dagger",
+          "quantity": 47
+        },
+        {
+          "name": "Anklebiter",
+          "quantity": 12
+        },
+        {
+          "name": "Fluffy Wizard Hat",
+          "quantity": 11
+        }
+      ]
+    },
+    "Germ": {
+      "count": 3027,
+      "items": [
+        {
+          "name": "Dog Jelly",
+          "quantity": 163
+        },
+        {
+          "name": "Pawlive Tree Seeds",
+          "quantity": 126
+        },
+        {
+          "name": "Slimboo",
+          "quantity": 33
+        },
+        {
+          "name": "Bucket Of Radioactive Worms",
+          "quantity": 27
+        },
+        {
+          "name": "Sludge Puddle",
+          "quantity": 2
+        }
+      ]
+    },
+    "Ghost": {
+      "count": 1078,
+      "items": [
+        {
+          "name": "Candy Corn",
+          "quantity": 539
+        },
+        {
+          "name": "Poop on Head",
+          "quantity": 12
+        },
+        {
+          "name": "Bald!",
+          "quantity": 8
+        },
+        {
+          "name": "Rat Face",
+          "quantity": 8
+        },
+        {
+          "name": "TP on you!",
+          "quantity": 8
+        },
+        {
+          "name": "Candy Corn Background",
+          "quantity": 6
+        },
+        {
+          "name": "Creepy Bats Background",
+          "quantity": 6
+        },
+        {
+          "name": "Drawed on your face",
+          "quantity": 6
+        },
+        {
+          "name": "Rainbow Ghosts Background",
+          "quantity": 6
+        },
+        {
+          "name": "Sunny Ghosts Background",
+          "quantity": 6
+        },
+        {
+          "name": "Heart Shnoz",
+          "quantity": 5
+        },
+        {
+          "name": "Pumpkin Spice Paws Background",
+          "quantity": 5
+        },
+        {
+          "name": "Scary Red Paws Background",
+          "quantity": 5
+        },
+        {
+          "name": "Creepy Pasta Background",
+          "quantity": 4
+        },
+        {
+          "name": "Ghastly Ghosts Background",
+          "quantity": 4
+        },
+        {
+          "name": "Pumpkins Ghosts Background",
+          "quantity": 4
+        },
+        {
+          "name": "Purple Spooky Paws Background",
+          "quantity": 4
+        },
+        {
+          "name": "Purple Bats Background",
+          "quantity": 3
+        },
+        {
+          "name": "Eerie Ghosts Background",
+          "quantity": 2
+        },
+        {
+          "name": "Goo Paws Background",
+          "quantity": 2
+        },
+        {
+          "name": "Spooky Ghosts Background",
+          "quantity": 2
+        },
+        {
+          "name": "Stump Legs",
+          "quantity": 2
+        },
+        {
+          "name": "Too Many Pumpkins Ghosts Background",
+          "quantity": 2
+        },
+        {
+          "name": "Big Head",
+          "quantity": 1
+        },
+        {
+          "name": "Scary Blood Ghosts Background",
+          "quantity": 1
+        }
+      ]
+    },
+    "Grimy Grim": {
+      "count": 1670,
+      "items": [
+        {
+          "name": "Grimy Gravestone",
+          "quantity": 1289
+        },
+        {
+          "name": "Eerie Dirt",
+          "quantity": 497
+        },
+        {
+          "name": "Grave Candle",
+          "quantity": 477
+        },
+        {
+          "name": "Cornflower Petal",
+          "quantity": 459
+        },
+        {
+          "name": "Living Dirt",
+          "quantity": 23
+        },
+        {
+          "name": "Marigold",
+          "quantity": 3
+        }
+      ]
+    },
+    "Groweduppieder": {
+      "count": 2734,
+      "items": [
+        {
+          "name": "Tapioca Eyeball",
+          "quantity": 5256
+        },
+        {
+          "name": "Empty Pie Dish",
+          "quantity": 1354
+        },
+        {
+          "name": "Eye of the Pieder",
+          "quantity": 805
+        },
+        {
+          "name": "Empty Spider Dish",
+          "quantity": 299
+        },
+        {
+          "name": "Pie on My Face",
+          "quantity": 5
+        }
+      ]
+    },
+    "Hammer": {
+      "count": 1567,
+      "items": [
+        {
+          "name": "Plank of Wood",
+          "quantity": 1566
+        },
+        {
+          "name": "Box of Nails",
+          "quantity": 481
+        },
+        {
+          "name": "Box of Screws",
+          "quantity": 466
+        },
+        {
+          "name": "Toy Hammer",
+          "quantity": 3
+        },
+        {
+          "name": "Mallet Mask",
+          "quantity": 1
+        }
+      ]
+    },
+    "Hatchling Tennisball": {
+      "count": 558,
+      "items": [
+        {
+          "name": "Enchanted Tennis Ball",
+          "quantity": 275
+        }
+      ]
+    },
+    "Hop Pot": {
+      "count": 1196,
+      "items": [
+        {
+          "name": "Odd Oil",
+          "quantity": 1196
+        },
+        {
+          "name": "Wool of Bat",
+          "quantity": 1183
+        },
+        {
+          "name": "Strange Stock",
+          "quantity": 243
+        },
+        {
+          "name": "Dreadful Pirate Mask",
+          "quantity": 53
+        },
+        {
+          "name": "Dogslime",
+          "quantity": 10
+        }
+      ]
+    },
+    "Icewolf": {
+      "count": 221,
+      "items": [
+        {
+          "name": "Doggy Ice Sculpture",
+          "quantity": 67
+        },
+        {
+          "name": "Demon Doggy Ice Wand",
+          "quantity": 9
+        },
+        {
+          "name": "Arcteeth's Wolfinator",
+          "quantity": 1
+        }
+      ]
+    },
+    "Leatsch": {
+      "count": 3246,
+      "items": [
+        {
+          "name": "Leatsch Poison",
+          "quantity": 3246
+        },
+        {
+          "name": "Odd Oil",
+          "quantity": 636
+        },
+        {
+          "name": "Zombie Feet",
+          "quantity": 3
+        },
+        {
+          "name": "Zombie Hands",
+          "quantity": 2
+        },
+        {
+          "name": "Bucket Of Radioactive Worms",
+          "quantity": 1
+        },
+        {
+          "name": "Leatsch Tail",
+          "quantity": 1
+        }
+      ]
+    },
+    "Leeper": {
+      "count": 440,
+      "items": [
+        {
+          "name": "Leeper Leg",
+          "quantity": 878
+        },
+        {
+          "name": "Peeper's Beeper",
+          "quantity": 5
+        }
+      ]
+    },
+    "Magicclover": {
+      "count": 755,
+      "items": [
+        {
+          "name": "Shadow Buddy",
+          "quantity": 238
+        },
+        {
+          "name": "Five Leaf Clover",
+          "quantity": 78
+        },
+        {
+          "name": "Abundance",
+          "quantity": 42
+        },
+        {
+          "name": "Rainbow Doggy Flower",
+          "quantity": 31
+        },
+        {
+          "name": "Safety",
+          "quantity": 31
+        }
+      ]
+    },
+    "Magicharp": {
+      "count": 942,
+      "items": [
+        {
+          "name": "Trickster's Lyre",
+          "quantity": 288
+        },
+        {
+          "name": "Magical Mystery Music",
+          "quantity": 104
+        },
+        {
+          "name": "Safety",
+          "quantity": 53
+        },
+        {
+          "name": "Shadow Buddy",
+          "quantity": 53
+        },
+        {
+          "name": "Abundance",
+          "quantity": 45
+        }
+      ]
+    },
+    "Magicrainbow": {
+      "count": 9454,
+      "items": [
+        {
+          "name": "Painbow",
+          "quantity": 2928
+        },
+        {
+          "name": "Rainbow-Spun Cloth",
+          "quantity": 965
+        },
+        {
+          "name": "Shadow Buddy",
+          "quantity": 503
+        },
+        {
+          "name": "Safety",
+          "quantity": 486
+        },
+        {
+          "name": "Abundance",
+          "quantity": 470
+        },
+        {
+          "name": "Starry Hat",
+          "quantity": 94
+        },
+        {
+          "name": "Sun Face",
+          "quantity": 92
+        }
+      ]
+    },
+    "Npc Thecone Small": {
+      "count": 1309,
+      "items": [
+        {
+          "name": "Plank of Wood",
+          "quantity": 1270
+        },
+        {
+          "name": "Very Large Cone",
+          "quantity": 410
+        },
+        {
+          "name": "Box of Nails",
+          "quantity": 400
+        },
+        {
+          "name": "Box of Screws",
+          "quantity": 381
+        },
+        {
+          "name": "Hard Hat",
+          "quantity": 11
+        },
+        {
+          "name": "Tiny Cone On My Head",
+          "quantity": 11
+        },
+        {
+          "name": "The Big Book",
+          "quantity": 5
+        }
+      ]
+    },
+    "Papa Peeper": {
+      "count": 275,
+      "items": [
+        {
+          "name": "Cheese",
+          "quantity": 59
+        },
+        {
+          "name": "Hot Cocoa",
+          "quantity": 59
+        },
+        {
+          "name": "Bucket of Worms",
+          "quantity": 54
+        },
+        {
+          "name": "Milk",
+          "quantity": 51
+        },
+        {
+          "name": "Blue Ugly Sweater",
+          "quantity": 12
+        },
+        {
+          "name": "Papa Peeper's Protein Powder",
+          "quantity": 10
+        },
+        {
+          "name": "Peeper's Peepers",
+          "quantity": 8
+        }
+      ]
+    },
+    "Pappypeeper": {
+      "count": 1520,
+      "items": [
+        {
+          "name": "Cheese",
+          "quantity": 317
+        },
+        {
+          "name": "Baby Peeper",
+          "quantity": 16
+        },
+        {
+          "name": "Peeper Pup",
+          "quantity": 9
+        },
+        {
+          "name": "Peeper Peeped",
+          "quantity": 6
+        }
+      ]
+    },
+    "Peam": {
+      "count": 11543,
+      "items": [
+        {
+          "name": "Dango Throwing Spear",
+          "quantity": 3460
+        },
+        {
+          "name": "Sweet Peas",
+          "quantity": 2388
+        },
+        {
+          "name": "Peam Cloak",
+          "quantity": 1
+        }
+      ]
+    },
+    "Peeper": {
+      "count": 740,
+      "items": [
+        {
+          "name": "Milk",
+          "quantity": 684
+        },
+        {
+          "name": "Cheese",
+          "quantity": 660
+        },
+        {
+          "name": "Hot Cocoa",
+          "quantity": 67
+        },
+        {
+          "name": "Bucket of Worms",
+          "quantity": 37
+        },
+        {
+          "name": "Peeper Plushie",
+          "quantity": 35
+        },
+        {
+          "name": "Peeper's Beeper",
+          "quantity": 24
+        },
+        {
+          "name": "Magical Doggy Plushie",
+          "quantity": 5
+        },
+        {
+          "name": "Blue Ugly Sweater",
+          "quantity": 4
+        }
+      ]
+    },
+    "Peeperpiper": {
+      "count": 790,
+      "items": [
+        {
+          "name": "Peeper Piper's Puny Piccolo",
+          "quantity": 790
+        },
+        {
+          "name": "Cheese",
+          "quantity": 156
+        },
+        {
+          "name": "Peeper Piper's Pepper",
+          "quantity": 15
+        },
+        {
+          "name": "Peeper's Beeper",
+          "quantity": 9
+        }
+      ]
+    },
+    "Pieder": {
+      "count": 147,
+      "items": [
+        {
+          "name": "Tapioca Eyeball",
+          "quantity": 346
+        },
+        {
+          "name": "Empty Pie Dish",
+          "quantity": 30
+        },
+        {
+          "name": "Empty Spider Dish",
+          "quantity": 5
+        },
+        {
+          "name": "Eye of the Pieder",
+          "quantity": 2
+        }
+      ]
+    },
+    "Potbull": {
+      "count": 1418,
+      "items": [
+        {
+          "name": "Potbull Potal",
+          "quantity": 1418
+        },
+        {
+          "name": "Flower Seeds",
+          "quantity": 1068
+        }
+      ]
+    },
+    "Pumpkin": {
+      "count": 6055,
+      "items": [
+        {
+          "name": "Pumpkin Cage",
+          "quantity": 6054
+        },
+        {
+          "name": "Pumpkin Week Fun Bucket",
+          "quantity": 604
+        },
+        {
+          "name": "Pumpkin Week Nasty Bucket",
+          "quantity": 58
+        }
+      ]
+    },
+    "Pupcup": {
+      "count": 520,
+      "items": [
+        {
+          "name": "Coconut",
+          "quantity": 477
+        },
+        {
+          "name": "Milk",
+          "quantity": 469
+        },
+        {
+          "name": "Sample Spoon",
+          "quantity": 366
+        },
+        {
+          "name": "Sundae Spoon",
+          "quantity": 2
+        }
+      ]
+    },
+    "Reeper": {
+      "count": 636,
+      "items": [
+        {
+          "name": "Cheese",
+          "quantity": 127
+        },
+        {
+          "name": "Reeper's Reapt Soul",
+          "quantity": 31
+        },
+        {
+          "name": "Reeper Peeper's Reaper",
+          "quantity": 19
+        },
+        {
+          "name": "Peeper's Beeper",
+          "quantity": 3
+        }
+      ]
+    },
+    "Rodin": {
+      "count": 495,
+      "items": [
+        {
+          "name": "Strange Blangus",
+          "quantity": 495
+        },
+        {
+          "name": "Food Token",
+          "quantity": 116
+        },
+        {
+          "name": "D20",
+          "quantity": 55
+        },
+        {
+          "name": "Clothes Token",
+          "quantity": 23
+        },
+        {
+          "name": "Reading Token",
+          "quantity": 15
+        },
+        {
+          "name": "Cursed Rodin Plushie",
+          "quantity": 8
+        },
+        {
+          "name": "Electric Heart",
+          "quantity": 6
+        },
+        {
+          "name": "Rodin's Theme",
+          "quantity": 3
+        },
+        {
+          "name": "Skelly Tail",
+          "quantity": 3
+        },
+        {
+          "name": "Internal Wiring",
+          "quantity": 2
+        }
+      ]
+    },
+    "Ruffroast": {
+      "count": 178,
+      "items": [
+        {
+          "name": "Hambone",
+          "quantity": 82
+        },
+        {
+          "name": "Steak",
+          "quantity": 63
+        },
+        {
+          "name": "A Single Sausage",
+          "quantity": 10
+        }
+      ]
+    },
+    "Skydog": {
+      "count": 893,
+      "items": [
+        {
+          "name": "Balloon Hook",
+          "quantity": 594
+        },
+        {
+          "name": "Blue Balloon",
+          "quantity": 541
+        },
+        {
+          "name": "Red Balloon",
+          "quantity": 535
+        },
+        {
+          "name": "Acorn",
+          "quantity": 497
+        },
+        {
+          "name": "Peanut Butter",
+          "quantity": 68
+        },
+        {
+          "name": "Cheese Puffs",
+          "quantity": 34
+        },
+        {
+          "name": "Chicken Leg",
+          "quantity": 24
+        },
+        {
+          "name": "Taco",
+          "quantity": 20
+        },
+        {
+          "name": "Hotted Dog",
+          "quantity": 18
+        },
+        {
+          "name": "Soda",
+          "quantity": 12
+        },
+        {
+          "name": "D20",
+          "quantity": 2
+        }
+      ]
+    },
+    "Slog": {
+      "count": 1253,
+      "items": [
+        {
+          "name": "Slog Log",
+          "quantity": 1249
+        },
+        {
+          "name": "Baby Slog",
+          "quantity": 370
+        },
+        {
+          "name": "Odd Oil",
+          "quantity": 259
+        },
+        {
+          "name": "Sneeze Staff",
+          "quantity": 38
+        },
+        {
+          "name": "Hazmat Suit",
+          "quantity": 13
+        },
+        {
+          "name": "Bucket Of Radioactive Worms",
+          "quantity": 11
+        },
+        {
+          "name": "Hazmat Mask",
+          "quantity": 7
+        }
+      ]
+    },
+    "Slog2": {
+      "count": 9097,
+      "items": [
+        {
+          "name": "Sluppy Shroom",
+          "quantity": 9097
+        },
+        {
+          "name": "Bucket Of Radioactive Worms",
+          "quantity": 97
+        },
+        {
+          "name": "Sluppy Slime",
+          "quantity": 96
+        },
+        {
+          "name": "Sludge Puddle",
+          "quantity": 2
+        }
+      ]
+    },
+    "Slop": {
+      "count": 7054,
+      "items": [
+        {
+          "name": "Topaz",
+          "quantity": 730
+        },
+        {
+          "name": "Emerald",
+          "quantity": 687
+        },
+        {
+          "name": "Bottle Cap",
+          "quantity": 625
+        },
+        {
+          "name": "Porcelain Gnome Head",
+          "quantity": 591
+        },
+        {
+          "name": "Enchanted Chain",
+          "quantity": 567
+        },
+        {
+          "name": "Dog Dice",
+          "quantity": 565
+        },
+        {
+          "name": "Broken Dogpet Toy",
+          "quantity": 563
+        },
+        {
+          "name": "Enchanted Band",
+          "quantity": 557
+        },
+        {
+          "name": "A Single Marble",
+          "quantity": 555
+        },
+        {
+          "name": "Reading Token",
+          "quantity": 127
+        },
+        {
+          "name": "Onyx",
+          "quantity": 125
+        },
+        {
+          "name": "D20",
+          "quantity": 122
+        },
+        {
+          "name": "Food Token",
+          "quantity": 122
+        },
+        {
+          "name": "Airship Ticket",
+          "quantity": 118
+        },
+        {
+          "name": "Sapphire",
+          "quantity": 117
+        },
+        {
+          "name": "Very Cool Stick",
+          "quantity": 116
+        },
+        {
+          "name": "Cow Tool",
+          "quantity": 113
+        },
+        {
+          "name": "Clothes Token",
+          "quantity": 111
+        },
+        {
+          "name": "Enchanted Plunger",
+          "quantity": 109
+        },
+        {
+          "name": "Sneeze Staff",
+          "quantity": 107
+        },
+        {
+          "name": "Weapons Token",
+          "quantity": 105
+        },
+        {
+          "name": "Tarnished Frisbee",
+          "quantity": 104
+        },
+        {
+          "name": "Emerald Crystal Skull",
+          "quantity": 61
+        },
+        {
+          "name": "Sapphire Crystal Skull",
+          "quantity": 31
+        },
+        {
+          "name": "Ruby Crystal Skull",
+          "quantity": 26
+        }
+      ]
+    },
+    "Surfinpeepr": {
+      "count": 1874,
+      "items": [
+        {
+          "name": "Summer Box",
+          "quantity": 1874
+        },
+        {
+          "name": "Surfer Peeper's Sandy Buddy",
+          "quantity": 922
+        },
+        {
+          "name": "Blue Pawpsicle",
+          "quantity": 202
+        },
+        {
+          "name": "Boneanna Pawpsicle",
+          "quantity": 168
+        },
+        {
+          "name": "Dog Pop",
+          "quantity": 168
+        },
+        {
+          "name": "Pawberry Pawpsicle",
+          "quantity": 149
+        }
+      ]
+    },
+    "Sweeper": {
+      "count": 823,
+      "items": [
+        {
+          "name": "Sweeper Coal",
+          "quantity": 823
+        },
+        {
+          "name": "Cheese",
+          "quantity": 148
+        }
+      ]
+    },
+    "Telephony": {
+      "count": 327,
+      "items": [
+        {
+          "name": "Electric Tail",
+          "quantity": 33
+        },
+        {
+          "name": "Brain Wires",
+          "quantity": 32
+        },
+        {
+          "name": "Bzzt",
+          "quantity": 30
+        },
+        {
+          "name": "Outlet Tail",
+          "quantity": 27
+        }
+      ]
+    },
+    "The Devourer": {
+      "count": 4305,
+      "items": [
+        {
+          "name": "Devourer of Crumbs",
+          "quantity": 46
+        },
+        {
+          "name": "Devour'O's",
+          "quantity": 22
+        }
+      ]
+    },
+    "Threeper": {
+      "count": 604,
+      "items": [
+        {
+          "name": "Threese",
+          "quantity": 604
+        },
+        {
+          "name": "Cheese",
+          "quantity": 130
+        },
+        {
+          "name": "Primordial Peeper",
+          "quantity": 12
+        }
+      ]
+    },
+    "Treasure": {
+      "count": 2412,
+      "items": [
+        {
+          "name": "Enchanted Band",
+          "quantity": 280
+        },
+        {
+          "name": "Dog Dice",
+          "quantity": 262
+        },
+        {
+          "name": "Bottle Cap",
+          "quantity": 254
+        },
+        {
+          "name": "Broken Dogpet Toy",
+          "quantity": 254
+        },
+        {
+          "name": "Porcelain Gnome Head",
+          "quantity": 251
+        },
+        {
+          "name": "Enchanted Chain",
+          "quantity": 250
+        },
+        {
+          "name": "A Single Marble",
+          "quantity": 227
+        },
+        {
+          "name": "Sapphire",
+          "quantity": 61
+        },
+        {
+          "name": "Tarnished Frisbee",
+          "quantity": 58
+        },
+        {
+          "name": "Cow Tool",
+          "quantity": 55
+        },
+        {
+          "name": "Onyx",
+          "quantity": 55
+        },
+        {
+          "name": "Topaz",
+          "quantity": 54
+        },
+        {
+          "name": "Airship Ticket",
+          "quantity": 52
+        },
+        {
+          "name": "Emerald",
+          "quantity": 49
+        },
+        {
+          "name": "Enchanted Plunger",
+          "quantity": 42
+        },
+        {
+          "name": "Very Cool Stick",
+          "quantity": 42
+        },
+        {
+          "name": "D20",
+          "quantity": 27
+        },
+        {
+          "name": "Weapons Token",
+          "quantity": 27
+        },
+        {
+          "name": "Clothes Token",
+          "quantity": 26
+        },
+        {
+          "name": "Food Token",
+          "quantity": 26
+        },
+        {
+          "name": "Reading Token",
+          "quantity": 23
+        },
+        {
+          "name": "Sapphire Crystal Skull",
+          "quantity": 13
+        },
+        {
+          "name": "Ruby Crystal Skull",
+          "quantity": 12
+        },
+        {
+          "name": "Emerald Crystal Skull",
+          "quantity": 8
+        }
+      ]
+    },
+    "Twoscoop Freezeypup": {
+      "count": 5037,
+      "items": [
+        {
+          "name": "Waffle Cone Shard",
+          "quantity": 4828
+        },
+        {
+          "name": "Smooshed Ice Cream",
+          "quantity": 4030
+        },
+        {
+          "name": "Cold Boot",
+          "quantity": 967
+        },
+        {
+          "name": "Vanilla Pendant",
+          "quantity": 727
+        },
+        {
+          "name": "Throwing Icicle",
+          "quantity": 142
+        },
+        {
+          "name": "Purple Winter Coat",
+          "quantity": 34
+        },
+        {
+          "name": "Red Winter Scarf",
+          "quantity": 33
+        },
+        {
+          "name": "Light Blue Winter Coat",
+          "quantity": 30
+        },
+        {
+          "name": "Lucky Coin",
+          "quantity": 30
+        },
+        {
+          "name": "Purple Winter Scarf",
+          "quantity": 23
+        },
+        {
+          "name": "White Bandit Hat",
+          "quantity": 23
+        },
+        {
+          "name": "Red Winter Coat",
+          "quantity": 17
+        },
+        {
+          "name": "Snowflake Shirt",
+          "quantity": 17
+        },
+        {
+          "name": "Blue Winter Scarf",
+          "quantity": 12
+        },
+        {
+          "name": "D20",
+          "quantity": 4
+        }
+      ]
+    },
+    "Unigore": {
+      "count": 534,
+      "items": [
+        {
+          "name": "Unigores Mark",
+          "quantity": 411
+        },
+        {
+          "name": "Gummy Skull",
+          "quantity": 159
+        },
+        {
+          "name": "Unigore Horn",
+          "quantity": 152
+        },
+        {
+          "name": "Unigore Fur",
+          "quantity": 148
+        },
+        {
+          "name": "Eyeshadow",
+          "quantity": 113
+        },
+        {
+          "name": "Horse Radish",
+          "quantity": 7
+        },
+        {
+          "name": "Crossbones Shirt",
+          "quantity": 1
+        }
+      ]
+    },
+    "Weeper": {
+      "count": 25199,
+      "items": [
+        {
+          "name": "Cheese",
+          "quantity": 5079
+        },
+        {
+          "name": "Crystal Tear",
+          "quantity": 251
+        }
+      ]
+    }
+  },
+  "recordedAt": "2026-11-18T20:24:52.170Z",
+  "name": "Master",
+  "doggiExportVersion": 1,
+  "sourcesHash": "a51e814a"
+}
