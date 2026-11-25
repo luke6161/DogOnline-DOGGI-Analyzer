@@ -546,7 +546,7 @@
     .source-title {
       font-weight: 700;
       font-size: 1.05rem;
-      color: var(--accent);
+      color: var(--text);
       overflow-wrap: anywhere;
     }
 
@@ -668,6 +668,12 @@
       border-radius: 999px;
       transition: width 0.25s ease;
     }
+    .bar-fill.rarity-very-common { background: #60a5fa; }
+    .bar-fill.rarity-common { background: #4ade80; }
+    .bar-fill.rarity-uncommon { background: #facc15; }
+    .bar-fill.rarity-rare { background: #fb923c; }
+    .bar-fill.rarity-very-rare { background: #c084fc; }
+    .bar-fill.rarity-ultra-rare { background: linear-gradient(90deg, #ff5b5b, #ffb84d, #f5e65b, #62df85, #60b9ff, #b78aff, #ff79c6); }
 
     .empty-items {
       color: var(--muted);
@@ -1242,7 +1248,7 @@
     }
 
     let loadedEntries = [];
-    let suppressDuplicatePrompts = false;
+    let keepAllDuplicates = false;
     let fileSortColumn = "fileName";
     let fileSortDirection = "asc";
 
@@ -1367,12 +1373,12 @@
     }
 
     function promptReplaceDuplicate(existingEntry, incomingEntry) {
-      if (suppressDuplicatePrompts) return Promise.resolve("skip");
+      if (keepAllDuplicates) return Promise.resolve("keep");
       return new Promise((resolve) => {
         const existingDate = parseRecordedAt(existingEntry.recordedAtRaw).display;
         const incomingDate = parseRecordedAt(incomingEntry.recordedAtRaw).display;
 
-        modalDescription.textContent = `A file named "${incomingEntry.fileName}" is already loaded. Would you like to replace it with the new file?`;
+		modalDescription.textContent = `A file named "${incomingEntry.fileName}" is already loaded. Would you like to replace it with the new file?`;
         modalCompare.innerHTML = `
           <div><strong>Existing:</strong> ${escapeHtml(existingEntry.fileName)} — Recorded: ${escapeHtml(existingDate)}</div>
           <div><strong>Incoming:</strong> ${escapeHtml(incomingEntry.fileName)} — Recorded: ${escapeHtml(incomingDate)}</div>
@@ -1391,8 +1397,8 @@
         function onSkip() { cleanup("skip"); }
         function onReplace() { cleanup("replace"); }
         function onSuppress() {
-          suppressDuplicatePrompts = true;
-          cleanup("skip");
+          keepAllDuplicates = true;
+          cleanup("keep");
         }
 
         modalSkipBtn.addEventListener("click", onSkip);
@@ -1498,6 +1504,8 @@
             const decision = await promptReplaceDuplicate(loadedEntries[existingIdx], incomingEntry);
             if (decision === "replace") {
               loadedEntries[existingIdx] = incomingEntry;
+            } else if (decision === "keep") {
+              loadedEntries.push(incomingEntry);
             }
           } else {
             loadedEntries.push(incomingEntry);
@@ -1574,7 +1582,7 @@
       return new Date(oldestMs).toISOString();
     }
 
-    function buildDoggiMasterPayload(entries, exportName, options = {}) {
+    function buildDoggiMasterPayload(entries, exportName, recordedAtIso, options = {}) {
       const merged = mergeActiveSources(entries, options);
       const sources = {};
 
@@ -1592,7 +1600,7 @@
 
       return {
         sources,
-        recordedAt: getOldestEntryIso(entries),
+        recordedAt: recordedAtIso,
         name: exportName,
         doggiExportVersion: 1,
         sourcesHash: computeSourcesHash(sources),
@@ -1604,7 +1612,7 @@
         (e) => typeof e.recordedAtMs === "number" && !Number.isNaN(e.recordedAtMs)
       );
       if (!datedEntries.length) {
-        return [{ entries: activeEntries, suffix: "" }];
+        return [{ entries: activeEntries }];
       }
 
       const minMs = Math.min(...datedEntries.map((e) => e.recordedAtMs));
@@ -1619,7 +1627,7 @@
       ).sort((a, b) => a - b);
 
       if (!splitTimestamps.length) {
-        return [{ entries: activeEntries, suffix: "" }];
+        return [{ entries: activeEntries }];
       }
 
       const batches = [];
@@ -1636,14 +1644,7 @@
       );
       if (tailGroup.length) batches.push({ entries: tailGroup });
 
-      return batches.map((batch, idx) => {
-        const oldestIso = getOldestEntryIso(batch.entries);
-        const dateTag = oldestIso.slice(0, 10);
-        return {
-          entries: batch.entries,
-          suffix: `-${idx + 1}-${dateTag}`,
-        };
-      });
+      return batches;
     }
 
     function getSortedLoadedEntries() {
@@ -2103,7 +2104,7 @@
                             </span>
                           </div>
                           <div class="bar-bg">
-                            <div class="bar-fill" style="width: ${barWidth}%"></div>
+                            <div class="bar-fill ${rarityClass}" style="width: ${barWidth}%"></div>
                           </div>
                         </li>
                       `;
@@ -2251,21 +2252,16 @@
         return;
       }
 
-      const distinctNames = Array.from(
-        new Set(
-          activeEntries
-            .map((e) => (typeof e.data.name === "string" ? e.data.name.trim() : ""))
-            .filter(Boolean)
-        )
-      );
-      const exportName = distinctNames.length === 1 ? distinctNames[0] : "Master";
       const batches = getExportBatches(activeEntries);
 
       batches.forEach((batch, index) => {
-        const payload = buildDoggiMasterPayload(batch.entries, exportName, {
+        const recordedAtIso = getOldestEntryIso(batch.entries);
+        const datePart = recordedAtIso.slice(0, 10);
+        const masterName = `Master ${datePart}`;
+        const payload = buildDoggiMasterPayload(batch.entries, masterName, recordedAtIso, {
           excludeItemBeforeCutoff: true,
         });
-        const fileName = `DOGGI-${exportName}${batch.suffix}.json`;
+        const fileName = `DOGGI-Master-${datePart}.json`;
         const triggerDownload = () => {
           downloadTextFile(fileName, JSON.stringify(payload, null, 2), "application/json");
         };
