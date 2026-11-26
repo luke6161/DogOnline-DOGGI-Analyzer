@@ -885,6 +885,10 @@
         <div id="fileGrid" class="file-grid"></div>
       </div>
     </section>
+    <div class="controls-group" style="justify-content:center; margin: 1rem 0 0;">
+      <button id="loadExampleDataBtn" class="btn" type="button">Load Example Data</button>
+      <span id="exampleDataStatus" class="subtitle" role="status" aria-live="polite"></span>
+    </div>
     </section>
 
 
@@ -2214,34 +2218,105 @@
     });
 
     importItemConfigsBtn.addEventListener("click", () => itemConfigFileInput.click());
+    function importItemConfigsCsvText(text) {
+      const rows = parseCsv(text);
+      if (!rows.length) throw new Error("The CSV is empty.");
+      const header = rows[0].map((x) => x.trim().toLowerCase());
+      const nameIndex = header.indexOf("item name");
+      const dateIndex = header.indexOf("date added");
+      if (nameIndex < 0 || dateIndex < 0) {
+        throw new Error('CSV must include "item name" and "date added" columns.');
+      }
+      const imported = new Map(itemConfigs.map((x) => [x.name.toLowerCase(), x]));
+      let addedOrUpdated = 0;
+      for (const row of rows.slice(1)) {
+        const name = String(row[nameIndex] || "").trim();
+        const date = String(row[dateIndex] || "").trim();
+        if (!name || !isValidDateString(date)) continue;
+        imported.set(name.toLowerCase(), { name, date });
+        addedOrUpdated++;
+      }
+      itemConfigs = Array.from(imported.values()).sort((a, b) => a.name.localeCompare(b.name));
+      saveItemConfigs();
+      renderItemConfigGrid();
+      render();
+      showError("");
+      return addedOrUpdated;
+    }
+
     itemConfigFileInput.addEventListener("change", async () => {
       const file = itemConfigFileInput.files && itemConfigFileInput.files[0];
       if (!file) return;
       try {
-        const rows = parseCsv(await file.text());
-        if (!rows.length) throw new Error("The CSV is empty.");
-        const header = rows[0].map((x) => x.trim().toLowerCase());
-        const nameIndex = header.indexOf("item name");
-        const dateIndex = header.indexOf("date added");
-        if (nameIndex < 0 || dateIndex < 0) {
-          throw new Error('CSV must include "item name" and "date added" columns.');
-        }
-        const imported = new Map(itemConfigs.map((x) => [x.name.toLowerCase(), x]));
-        for (const row of rows.slice(1)) {
-          const name = String(row[nameIndex] || "").trim();
-          const date = String(row[dateIndex] || "").trim();
-          if (!name || !isValidDateString(date)) continue;
-          imported.set(name.toLowerCase(), { name, date });
-        }
-        itemConfigs = Array.from(imported.values()).sort((a, b) => a.name.localeCompare(b.name));
-        saveItemConfigs();
-        renderItemConfigGrid();
-        render();
-        showError("");
+        importItemConfigsCsvText(await file.text());
       } catch (err) {
         showError(`Could not load item config CSV: ${err.message}`);
       } finally {
         itemConfigFileInput.value = "";
+      }
+    });
+
+    const loadExampleDataBtn = document.getElementById("loadExampleDataBtn");
+    const exampleDataStatus = document.getElementById("exampleDataStatus");
+
+    async function listExampleRepositoryFiles(directoryUrl) {
+      const response = await fetch(directoryUrl, {
+        headers: { Accept: "application/vnd.github+json" },
+      });
+      if (!response.ok) {
+        throw new Error(`GitHub listing failed (${response.status}).`);
+      }
+      const items = await response.json();
+      const files = [];
+      for (const item of items) {
+        if (item.type === "dir") {
+          files.push(...await listExampleRepositoryFiles(item.url));
+        } else if (item.type === "file" && /\.(json|csv)$/i.test(item.name)) {
+          files.push(item);
+        }
+      }
+      return files;
+    }
+
+    loadExampleDataBtn.addEventListener("click", async () => {
+      if (loadExampleDataBtn.disabled) return;
+      loadExampleDataBtn.disabled = true;
+      loadExampleDataBtn.textContent = "Loading Example Data…";
+      exampleDataStatus.textContent = "Checking repository files";
+      showError("");
+      try {
+        const directoryUrl = "https://api.github.com/repos/luke6161/DogOnline-DOGGI-Analyzer/contents/example_data";
+        const files = await listExampleRepositoryFiles(directoryUrl);
+        const jsonFiles = files.filter((file) => /\.json$/i.test(file.name));
+        const csvFiles = files.filter((file) => /\.csv$/i.test(file.name));
+        if (!jsonFiles.length && !csvFiles.length) {
+          throw new Error("No .json or .csv example files were found in example_data.");
+        }
+
+        let configsImported = 0;
+        for (const file of csvFiles) {
+          const response = await fetch(file.download_url);
+          if (!response.ok) throw new Error(`Could not download ${file.name} (${response.status}).`);
+          configsImported += importItemConfigsCsvText(await response.text());
+        }
+
+        const dataFiles = [];
+        for (const file of jsonFiles) {
+          const response = await fetch(file.download_url);
+          if (!response.ok) throw new Error(`Could not download ${file.name} (${response.status}).`);
+          const content = await response.text();
+          dataFiles.push(new File([content], file.name, { type: "application/json" }));
+        }
+        if (dataFiles.length) await handleFiles(dataFiles);
+
+        exampleDataStatus.textContent =
+          `Loaded ${dataFiles.length} JSON file(s) and ${configsImported} item config row(s).`;
+      } catch (err) {
+        exampleDataStatus.textContent = "";
+        showError(`Could not load example data: ${err.message}`);
+      } finally {
+        loadExampleDataBtn.disabled = false;
+        loadExampleDataBtn.textContent = "Load Example Data";
       }
     });
 
