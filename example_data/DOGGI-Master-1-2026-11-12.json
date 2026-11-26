@@ -975,16 +975,12 @@
           "quantity": 317
         },
         {
+          "name": "Bucket Of Radioactive Worms",
+          "quantity": 62
+        },
+        {
           "name": "Slimboo",
           "quantity": 54
-        },
-        {
-          "name": "Bucket of Radioactive Worms",
-          "quantity": 39
-        },
-        {
-          "name": "Bucket Of Radioactive Worms",
-          "quantity": 23
         },
         {
           "name": "Sludge Puddle",
@@ -1750,16 +1746,12 @@
           "quantity": 14
         },
         {
-          "name": "Bucket of Radioactive Worms",
-          "quantity": 8
+          "name": "Bucket Of Radioactive Worms",
+          "quantity": 10
         },
         {
           "name": "Hazmat Suit",
           "quantity": 8
-        },
-        {
-          "name": "Bucket Of Radioactive Worms",
-          "quantity": 2
         },
         {
           "name": "Stinkie",
@@ -1780,11 +1772,7 @@
         },
         {
           "name": "Bucket Of Radioactive Worms",
-          "quantity": 10
-        },
-        {
-          "name": "Bucket of Radioactive Worms",
-          "quantity": 1
+          "quantity": 11
         }
       ]
     },
@@ -2212,7 +2200,7 @@
     }
   },
   "recordedAt": "2026-11-12T19:04:00.000Z",
-  "name": "Master",
+  "name": "Master Data 11/12-11/18",
   "doggiExportVersion": 1,
-  "sourcesHash": "caa3a5b0"
+  "sourcesHash": "414e3b68"
 }
